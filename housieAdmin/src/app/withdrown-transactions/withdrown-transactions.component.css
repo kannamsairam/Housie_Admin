@@ -1,0 +1,35 @@
+.fa-calendar
+{
+    padding: 11.6px;
+    background: dodgerblue;
+    color: white;
+    min-width: 50px;
+    text-align: center;
+    position: absolute;
+    right: 8px;
+    top: 29px;
+    border-radius: 4px;
+}
+
+
+.col-3 {
+    flex: 0 0 23%;
+    max-width: 25%;
+}
+.btn.btn-primary
+{
+    height: -webkit-fill-available;
+    margin-top: 35px;
+}
+.d-picker{
+    margin-top: 32px;
+    margin-left: 5px;
+}
+.t-btns button{
+    height: 38px;
+}
+
+table
+{
+    width: 100%;
+}

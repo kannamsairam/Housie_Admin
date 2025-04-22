@@ -1,0 +1,5 @@
+.nav-sidebar .nav-link>.right, .nav-sidebar .nav-link>p>.right {
+    position: absolute;
+    right: 0.5rem;
+    top: 0.7rem;
+}

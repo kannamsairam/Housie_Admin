@@ -1,0 +1,75 @@
+<div class="modal fade" id="addBonusModal" tabindex="-1" role="dialog" aria-labelledby="addBonusModalLabel"
+	aria-hidden="true" data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog">
+		<div class="modal-content" *ngIf="!modalData.id">
+			<div class="modal-header">
+				<h4 *ngIf="!modalData._id" class="modal-title" id="addBonusModalLabel">Add New Bonus</h4>
+				<h4 *ngIf="modalData._id" class="modal-title" id="addBonusModalLabel">Update Bonus Details</h4>
+				<button type="button" id="close" (click)="isModalOpen = false" class="close" data-dismiss="modal"><span
+						aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+			</div>
+			<div class="modal-body">
+				<form [formGroup]="bonusDeatilsFormGroup" (keydown.enter)="$event.preventDefault();">
+					<div class="form-group">
+
+						<div class="row">
+							<div class="col">
+								<label for="name">Name:<span class="text-danger">*</span></label>
+								<input type="text" autocomplete="off" id="name" class="form-control"
+									formControlName="name" required />
+								<div *ngIf="formFieldValidator('name')" class="text-danger">
+									<span *ngIf="formFieldErrors('name')?.hasOwnProperty('required')">
+										Name is required
+									</span>
+
+								</div>
+							</div>
+						</div>
+						<div class="row mt-4">
+							<div class="col">
+								<label for="amount">Amount:<span class="text-danger">*</span></label>
+								<input type="text" autocomplete="off" id="amount" class="form-control"
+									formControlName="amount" required />
+								<div *ngIf="formFieldValidator('amount')" class="text-danger">
+									<span *ngIf="formFieldErrors('amount')?.hasOwnProperty('required')">
+										Amount is required
+									</span>
+									<span *ngIf="formFieldErrors('amount')?.hasOwnProperty('pattern')">
+										Invalid pattern
+									</span>
+
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" (click)="isModalOpen = false" class="btn btn-dark"
+					data-dismiss="modal">Close</button>
+				<button type="button" (click)="addBonus()" class="btn btn-primary"
+					[disabled]="bonusDeatilsFormGroup.invalid || dataLoader">
+					<span *ngIf="modalData._id">Update</span>
+					<span *ngIf="!modalData._id">Add</span>
+				</button>
+			</div>
+		</div>
+
+		<div class="modal-content" *ngIf="modalData.id">
+			<div class="modal-header">
+				<h4 class="modal-title" id="addBonusModalLabel">Delete Bonus</h4>
+				<button type="button" id="close" (click)="isModalOpen = false" class="close" data-dismiss="modal"><span
+						aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+			</div>
+			<div class="modal-body">
+				<p>Are you sure you want to delete?</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" (click)="isModalOpen = false" class="btn btn-dark"
+					data-dismiss="modal">Cancel</button>
+				<button type="button" (click)="confirm()" class="btn btn-primary">Confirm</button>
+			</div>
+		</div>
+	</div>
+</div>

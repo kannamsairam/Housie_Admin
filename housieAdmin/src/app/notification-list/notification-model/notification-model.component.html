@@ -1,0 +1,85 @@
+<div class="modal fade" id="notificationModel" tabindex="-1" role="dialog" aria-labelledby="notificationModelLabel"
+    aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" *ngIf="!modalData.id">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 *ngIf="!modalData._id" class="modal-title" id="notificationModelLabel">Add New Notification</h4>
+                <h4 *ngIf="modalData._id" class="modal-title" id="notificationModelLabel">Update Notification</h4>
+                <button type="button" id="close" class="close" (click)="isModalOpen = false" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="notificationFormGroup" (keydown.enter)="$event.preventDefault();">
+                    <div class="form-group">
+
+                        <div class="row">
+                            <div class="col-12 mt-2">
+                                <label for="balwallet">Title<span class="text-danger">*</span></label>
+                                <input type="text" autocomplete="off" class="form-control" formControlName="title"
+                                    required />
+
+                                <div *ngIf="formFieldValidator('title')" class="text-danger">
+                                    <span *ngIf="formFieldErrors('title')?.hasOwnProperty('required')">
+                                        Title is required
+                                    </span>
+
+                                </div>
+                            </div>
+
+                            <div class="col-12 mt-2">
+                                <label for="bonus">Message<span class="text-danger">*</span></label>
+                                <textarea id="bonus" name="bonus" class="form-control" formControlName='description'
+                                    required></textarea>
+                                <div *ngIf="formFieldValidator('description')" class="text-danger">
+                                    <span *ngIf="formFieldErrors('description')?.hasOwnProperty('required')">
+                                        Description is required
+                                    </span>
+
+                                </div>
+                            </div>
+
+                            <div class="col-12 mt-2">
+                                <b class="text-danger">*</b>
+                                <label class="btn btn-default">
+                                    <img [src]="imageSrc" *ngIf="imageSrc" style="width:30%">
+                                    <input type="file" (change)="selectFile($event)">
+                                </label>
+                                <p class="text-danger">{{imgError}}</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" (click)="isModalOpen = false" class="btn btn-dark" data-dismiss="modal"
+                    [disabled]="dataLoader">Close</button>
+                <button type="button" (click)="addNotification()" class="btn btn-primary" (click)="isModalOpen = false"
+                    [disabled]="notificationFormGroup.invalid || dataLoader">
+                    <span *ngIf="modalData._id">Update</span>
+                    <span *ngIf="!modalData._id">Add</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-dialog" *ngIf="modalData.id">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="notificationModelLabel">Delete Notification</h4>
+                <button type="button" id="close" class="close" (click)="isModalOpen = false" data-dismiss="modal"><span
+                        aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" (click)="isModalOpen = false" class="btn btn-dark"
+                    data-dismiss="modal">Cancel</button>
+                <button type="button" (click)="confirm()" class="btn btn-primary"
+                    (click)="isModalOpen = false">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>

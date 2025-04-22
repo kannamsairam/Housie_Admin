@@ -1,0 +1,227 @@
+<section class="content h-fit-to-screen py-2 px-3">
+    <div class="container-fluid">
+        <div class="text-right">
+            <a class="text-color-primary" style="cursor: pointer;" (click)="navigateTo()">Contest Management</a>
+            <span> &#47;
+                <a>{{ !overAllView ?"User Game": "Game" }} Information</a>
+            </span>
+        </div>
+        <div class="card card-primary mt-2">
+            <div class="card-header">
+                <h3 class="card-title">{{ !overAllView ?"User Game": "Game" }} Information</h3>
+            </div>
+            <!--Single user info-->
+            <div class="row card-body" *ngIf="!overAllView">
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-md-6 user-tickets" *ngFor="let items of ticketInfo; let i= index">
+                            <h4>Ticket#{{i+1}}</h4>
+                            <table border="1">
+                                <tr *ngFor="let item of items.tickets">
+                                    <td *ngFor="let num of item" [class]=" toCheckNum(num,items)">
+                                        <button mat-flat-button
+                                            *ngIf=" toCheckBtn(num,items) ;else other_content"
+                                            (click)="gatNumberDetails(items,i,num)">{{num}}</button>
+                                        <ng-template #other_content> {{num === 0 ? '' : num}}</ng-template>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <!-- <div class="col-md-6 user-tickets">
+                            <h4>Ticket#2</h4>
+                            <table border="1">
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td class="num-selected">13</td>
+                                    <td>&nbsp;</td>
+                                    <td class="num-selected">32</td>
+                                    <td class="num-selected">42</td>
+                                    <td>&nbsp;</td>
+                                    <td class="num-selected">65</td>
+                                    <td>&nbsp;</td>
+                                    <td>80</td>
+                                </tr>
+                                <tr>
+                                    <td class="num-selected">2</td>
+                                    <td>&nbsp;</td>
+                                    <td class="num-selected">25</td>
+                                    <td>&nbsp;</td>
+                                    <td><button mat-flat-button>47</button></td>
+                                    <td>&nbsp;</td>
+                                    <td class="num-selected">69</td>
+                                    <td>&nbsp;</td>
+                                    <td class="num-selected">84</td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td class="num-selected">18</td>
+                                    <td>&nbsp;</td>
+                                    <td class="num-selected">37</td>
+                                    <td>&nbsp;</td>
+                                    <td class="num-selected">55</td>
+                                    <td>&nbsp;</td>
+                                    <td>77</td>
+                                    <td class="num-selected">85</td>
+                                </tr>
+                            </table>
+                        </div> -->
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-12 user-winning-tickets">
+                            <h4>Ticket Winning Information</h4>
+                            <div class="num-info-sec">
+                                <h5>Ticket#{{ticketNumber}}</h5>
+                                
+                                    <div *ngFor="let items of numberDetails.data; let i= index"
+                                        [class]=" toReturnText(items) ? 'win-times num-won' : 'win-times '">
+                                        <div><span [class]=" getRandomizer(0,4,i) ">{{items}}</span><span
+                                                class="num-win">{{ items === numberDetails.value ? numberDetails.eventName : '>>>>'}}
+                                            </span></div>
+                                        <div class="num-time-date" *ngIf="items === numberDetails.value " ><i class="fas fa-clock"></i> {{ numberDetails.createdAt |
+                                            date:"hh:mm:ss a" }}
+                                        </div>
+                                        <div *ngIf="items !== numberDetails.value " class="num-connection"></div>
+                                    </div>
+
+
+                                <!-- ticket info end  -->
+
+                                
+                                <!-- <div class="win-times">
+                                    <div><span class="num-dtls num-color-b">4</span><span class="num-win">>>>>
+                                        </span></div>
+                                    <div class="num-time-date"><i class="fas fa-clock"></i> 10:31:15</div>
+                                    <div class="num-connection"></div>
+                                </div>
+                                <div class="win-times">
+                                    <div><span class="num-dtls num-color-c">31</span><span class="num-win">>>>>
+                                        </span></div>
+                                    <div class="num-time-date"><i class="fas fa-clock"></i> 10:31:35</div>
+                                    <div class="num-connection"></div>
+                                </div>
+
+                                <div class="win-times">
+                                    <div><span class="num-dtls num-color-d">6</span><span class="num-win">>>>>
+                                        </span></div>
+                                    <div class="num-time-date"><i class="fas fa-clock"></i> 10:35:30</div>
+                                    <div class="num-connection"></div>
+                                </div>
+
+                                <div class="win-times num-won">
+                                    <div><span class="num-dtls num-color-e">45</span><span class="num-win">Early
+                                            Five</span></div>
+                                    <div class="num-time-date"><i class="fas fa-clock"></i> 10:36:47</div>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+            <!--All users info-->
+            <div class="row card-body" *ngIf="overAllView">
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-md-12 user-tickets o-v">
+                            <h4>Ticket</h4>
+                            <table border="1">
+                                <tr>
+                                    <!-- *ngFor="let ticket of overAllViewData; let indx= index" -->
+                                    <td *ngFor="let number of toReturnNumberArray(0,10); let indx= index">
+                                          <button *ngIf="overAllDataCrossed.includes(number);else other_content" (click)="onNumberClick(number)" mat-flat-button>{{number}}</button>
+                                          <ng-template #other_content> {{number}}</ng-template>
+                                    </td>                                   
+                                </tr>
+                                <tr>
+                                    <td *ngFor="let number of toReturnNumberArray(10,20); let indx= index"><button *ngIf="overAllDataCrossed.includes(number);else other_content" (click)="onNumberClick(number)" mat-flat-button>{{number}}</button>
+                                          <ng-template #other_content> {{number}}</ng-template></td>    
+                                </tr>
+                                <tr>
+                                    <td *ngFor="let number of toReturnNumberArray(20,30); let indx= index"><button *ngIf="overAllDataCrossed.includes(number);else other_content" (click)="onNumberClick(number)" mat-flat-button>{{number}}</button>
+                                          <ng-template #other_content> {{number}}</ng-template></td> 
+                                   
+                                </tr>
+                                <tr>
+                                    <td *ngFor="let number of toReturnNumberArray(30,40); let indx= index"><button *ngIf="overAllDataCrossed.includes(number);else other_content" (click)="onNumberClick(number)" mat-flat-button>{{number}}</button>
+                                          <ng-template #other_content> {{number}}</ng-template></td> 
+                                  
+                                </tr>
+                                <tr>
+                                    <td *ngFor="let number of toReturnNumberArray(40,50); let indx= index"><button *ngIf="overAllDataCrossed.includes(number);else other_content" (click)="onNumberClick(number)" mat-flat-button>{{number}}</button>
+                                          <ng-template #other_content> {{number}}</ng-template></td> 
+
+                                </tr>
+                                <tr>
+                                    <td *ngFor="let number of toReturnNumberArray(50,60); let indx= index"><button *ngIf="overAllDataCrossed.includes(number);else other_content" (click)="onNumberClick(number)" mat-flat-button>{{number}}</button>
+                                          <ng-template #other_content> {{number}}</ng-template></td> 
+                                </tr>
+                                <tr>
+                                    <td *ngFor="let number of toReturnNumberArray(60,70); let indx= index"><button *ngIf="overAllDataCrossed.includes(number);else other_content" (click)="onNumberClick(number)" mat-flat-button>{{number}}</button>
+                                          <ng-template #other_content> {{number}}</ng-template></td> 
+                                </tr>
+                                <tr>
+                                    <td *ngFor="let number of toReturnNumberArray(70,80); let indx= index"><button *ngIf="overAllDataCrossed.includes(number);else other_content" (click)="onNumberClick(number)" mat-flat-button>{{number}}</button>
+                                          <ng-template #other_content> {{number}}</ng-template></td> 
+                                </tr>
+                                <tr>
+                                    <td *ngFor="let number of toReturnNumberArray(80,90); let indx= index"><button *ngIf="overAllDataCrossed.includes(number);else other_content" (click)="onNumberClick(number)" mat-flat-button>{{number}}</button>
+                                          <ng-template #other_content> {{number}}</ng-template></td> 
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-12 user-winning-tickets">
+                            <h4>Ticket Winning Information</h4>
+                            <div class="num-info-sec o-view-info-sec">
+                                <h5>Ticket Numbers Information</h5>
+
+
+
+                                <mat-accordion *ngFor="let users of toReturnArray(numberInfo); let indx= index">
+                                    <mat-expansion-panel [expanded]="step === indx" (opened)="setStep(indx)" hideToggle>
+                                        <mat-expansion-panel-header>
+                                            <mat-panel-title>
+                                                <div class="win-times">
+                                                    <div><span
+                                                            class="num-dtls num-color-e">{{selectedNumber}}</span><span
+                                                            class="num-win">{{users}}
+                                                        </span></div>
+                                                    <!-- <div class="num-time-date"><i class="fas fa-clock"></i> 
+                                                    </div> -->
+                                                </div>
+                                            </mat-panel-title>
+                                        </mat-expansion-panel-header>
+                                        <div class="win-times" *ngFor="let user of numberInfo[users];let ind=index ">
+                                            <div><span class="num-dtls num-color-a">></span><span
+                                                    class="num-win">{{user.name}}
+                                                </span></div>
+                                            <div class="num-time-date"><i class="fas fa-clock"></i> {{user.eventTime |
+                                                date:"hh:mm:ss a"}}
+                                            </div>
+                                            <div class="num-connection" *ngIf="numberInfo[users].length -1 !==ind ">
+                                            </div>
+                                        </div>
+
+                                    </mat-expansion-panel>
+                                </mat-accordion>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

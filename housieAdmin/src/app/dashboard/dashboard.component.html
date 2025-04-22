@@ -1,0 +1,170 @@
+<app-loader [type]=2 *ngIf="dataLoader"></app-loader>
+<section class="content pt-2 mb-4">
+	<div class="container-fluid">
+		<div class="row d-flex justify-content-center">
+			<div class="col-lg-3 col-6"
+				*ngIf="userPrevilages.includes('usersManagement') || userPrevilages.includes('admin')">
+				<div class="small-box bg-info">
+					<div class="inner">
+						<h3>{{ dashBoardData.totalUsers }}</h3>
+						<p>Total Users</p>
+					</div>
+					<div class="icon">
+						<i class="fas fa-users"></i>
+					</div>
+					<a routerLink="/user-management" class="small-box-footer">More info <i
+							class="fas fa-arrow-circle-right"></i></a>
+				</div>
+			</div>
+
+			<!-- <div class="col-lg-3 col-6">
+				<div class="small-box bg-success">
+					<div class="inner">
+						<h3>{{ dashBoardData.games }}</h3>
+						<p>Games</p>
+					</div>
+					<div class="icon">
+						<i class="ion ion-xbox"></i>
+					</div>
+					<a routerLink="/contest-management" class="small-box-footer">More info <i
+							class="fas fa-arrow-circle-right"></i></a>
+				</div>
+			</div>
+ -->
+
+			<!-- <div class="col-lg-3 col-6">
+				<div class="small-box bg-danger">
+					<div class="inner">
+						<h3>{{ dashBoardData.questions }}</h3>
+						<p>Questions</p>
+					</div>
+					<div class="icon">
+						<i class="fas fa-question"></i>
+					</div>
+					<a routerLink="/quiz-management" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+				</div>
+			</div> -->
+
+			<div class="col-lg-3 col-6">
+				<div class="small-box bg-secondary">
+					<div class="inner">
+						<h3>{{ dashBoardData.admins }}</h3>
+						<p>Sub Admins</p>
+					</div>
+					<div class="icon">
+						<i class="fas fa-user-shield"></i>
+					</div>
+					<a routerLink="/admin-management" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+				</div>
+			</div>
+
+			<div class="col-lg-3 col-6">
+				<div class="small-box bg-purple">
+					<div class="inner">
+						<h3>{{ dashBoardData.quiz }}</h3>
+						<p>Quiz</p>
+					</div>
+					<div class="icon">
+						<i class="fas fa-question nav-icon"></i>
+					</div>
+					<a routerLink="/quiz-management" class="small-box-footer">More info <i
+							class="fas fa-arrow-circle-right"></i></a>
+				</div>
+			</div>
+
+			<div class="col-lg-3 col-6" *ngIf=" userPrevilages.includes('reports') || userPrevilages.includes('admin')">
+				<div class="small-box bg-danger">
+					<div class="inner">
+						<h3>{{ dashBoardData.transactions }}</h3>
+						<p>User Transaction</p>
+					</div>
+					<div class="icon">
+						<i class="fas fa-chart-line"></i>
+					</div>
+					<a routerLink="/user-transaction" class="small-box-footer">More info <i
+							class="fas fa-arrow-circle-right"></i></a>
+				</div>
+			</div>
+
+			<div class="col-lg-3 col-6"
+				*ngIf=" userPrevilages.includes('withdrawnRequest') || userPrevilages.includes('admin')">
+				<div class="small-box bg-warning">
+					<div class="inner">
+						<h3>{{ dashBoardData.withdrawn }}</h3>
+						<p>Withdrawn</p>
+					</div>
+					<div class="icon">
+						<i class="fas fa-rupee-sign"></i>
+					</div>
+					<a routerLink="/withdrown-transactions" class="small-box-footer">More info <i
+							class="fas fa-arrow-circle-right"></i></a>
+				</div>
+			</div>
+
+
+
+			<div class="col-lg-3 col-6">
+				<div class="small-box bg-lime">
+					<div class="inner">
+						<h3>{{ dashBoardData.banners }}</h3>
+						<p>Banners</p>
+					</div>
+					<div class="icon">
+						<i class="fas fa-images"></i>
+					</div>
+					<a routerLink="/banner-management" class="small-box-footer">More info <i
+							class="fas fa-arrow-circle-right"></i></a>
+				</div>
+			</div> 
+			<div class="col-lg-3 col-6">
+				<div class="small-box bg-fuchsia">
+					<div class="inner">
+						<h3>{{ dashBoardData.kycPending }}</h3>
+						<p>KYC Pendings</p>
+					</div>
+					<div class="icon">
+						<i class="fas fa-address-card"></i>
+					</div>
+					<a routerLink="/user-management" class="small-box-footer">More info <i
+							class="fas fa-arrow-circle-right"></i></a>
+				</div>
+			</div>
+
+		</div>
+		<div class="row">
+
+			<div class="col-md-8">
+				<div class="card">
+					<div class="card-body">
+						<h3 class="card-title">User Transactions</h3>
+						<canvas baseChart [chartType]="'line'" [legend]="true" [datasets]="chartData"
+							[labels]="chartLabels" [options]="chartOptions">
+						</canvas>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="card">
+					<div class="card-body">
+						<div style="overflow: hidden;">
+							<h3 class="card-title full-width">Upcoming Games</h3>
+						</div>
+						<div class="up-comming-games" *ngFor="let obj of dataSource,index as i;">
+							<div class="game-details full-width">
+								<div>{{obj.name}}</div>
+
+								<div class="game-timer"><i class='fas fa-clock'></i> {{obj.remainingTime}}
+								</div>
+							</div>
+							<div class="game-details full-width nor">
+								<div>Tickets / <span>{{obj.totalTickets}}</span></div>
+								<div>Join Fee <span>&#x20b9;{{obj.fees}}</span></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</section>

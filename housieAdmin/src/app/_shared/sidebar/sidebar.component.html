@@ -1,0 +1,226 @@
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+	<div class="bg-light text-center pl-1 pt-3 pb-3">
+		<a routerLink="/dashboard">
+			<img src="assets/img/sidebar.png" alt="Housie Logo" class="img-fluid">
+		</a>
+	</div>
+
+	<div class="sidebar">
+		<nav class="mt-2">
+			<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+
+				<li class="nav-item">
+					<a routerLink="/dashboard" class="nav-link" routerLinkActive="active">
+						<i class="nav-icon fas fa-tachometer-alt"></i>
+						<p>
+							Dashboard
+						</p>
+					</a>
+				</li>
+
+				<li class="nav-item">
+					<a routerLink="contest-management" class="nav-link" routerLinkActive="active">
+						<i class="fas fa-gamepad nav-icon"></i>
+						<p>
+							Contests Manager
+						</p>
+					</a>
+				</li>
+				<!-- dynamic section start -->
+
+				<div *ngFor="let sidNav of sideNavs; index as i">
+					<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+						data-accordion="false">
+						<li class="nav-item" *ngIf="toCheckPermission(sidNav.compared)">
+							<a [routerLink]="sidNav.path" class="nav-link" routerLinkActive="active">
+								<i [ngClass]="sidNav.icon"></i>
+								<p>
+									{{sidNav.name}}
+								</p>
+							</a>
+						</li>
+					</ul>
+
+				</div>
+
+
+				<!-- dynamic section end -->
+
+
+				<!-- <li class="nav-item">
+					<a href="https://www.abstractmens.com/admin/coupons" class="nav-link" routerLinkActive="active">
+						<i class="fas fa-percent nav-icon"></i>
+						<p>
+							Coupons
+						</p>
+					</a>
+				</li> -->
+
+
+
+				<!-- 
+				<li class="nav-item">
+					<a routerLink="/quiz-management" class="nav-link" routerLinkActive="active">
+						<i class="fas fa-question nav-icon"></i>
+						<p>
+							Quiz
+						</p>
+					</a>
+				</li>
+
+
+				<li class="nav-item">
+					<a routerLink="/admin-management" class="nav-link" routerLinkActive="active">
+						<i class="fas fa-user-shield nav-icon"></i>
+						<p>
+							Sub Admins
+						</p>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a routerLink="/user-management" class="nav-link" routerLinkActive="active">
+						<i class="fas fa-users nav-icon"></i>
+						<p>
+							Users Management
+						</p>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a routerLink="/user-wallet" class="nav-link" routerLinkActive="active">
+						<i class="fas fa-address-card nav-icon"></i>
+						<p>
+							Users Wallet
+						</p>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a routerLink="/banner-management" class="nav-link" routerLinkActive="active">
+						<i class="fas fa-images nav-icon"></i>
+						<p>
+							Banner Management
+						</p>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a routerLink="/bonus-management" class="nav-link" routerLinkActive="active">
+						<i class="fas fa-percent nav-icon"></i>
+						<p>
+							Bonus Management
+						</p>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a routerLink="/withdrown-transactions" class="nav-link" routerLinkActive="active">
+						<i class="fas fa-rupee-sign nav-icon"></i>
+						<p>
+							Withdrawn Request
+						</p>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a routerLink="/user-transaction" class="nav-link" routerLinkActive="active">
+						<i class="fas fa-chart-line nav-icon"></i>
+						<p>
+							Reports
+						</p>
+					</a>
+				</li>
+
+				<li class="nav-item">
+					<a routerLink="/notification-list" class="nav-link" routerLinkActive="active">
+						<i class="fas fa-bell nav-icon"></i>
+						<p>
+							Notification Management
+						</p>
+					</a>
+				</li> -->
+
+				<!-- <li class="nav-item">
+					<a class="nav-link" (click)="openModal()" data-toggle="modal" style="cursor: pointer;"
+						data-target="#passwordModal">
+						<i class="fas fa-lock nav-icon"></i> Change Password
+					</a>
+				</li> -->
+
+				<li class="nav-item">
+					<a class="nav-link" (click)="logout()" style="cursor: pointer;">
+						<i class="fas fa-sign-out-alt nav-icon"></i> Log Out
+					</a>
+				</li>
+
+
+
+				<!-- <li class="nav-item">
+					<a class="nav-link" style="cursor: pointer;">
+						<i class="fas fa fa-bell nav-icon"></i>
+						<p>
+							Notification Management&nbsp;&nbsp;
+							<i class="fas fa-angle-left right"></i>
+						</p>
+					</a>
+					<ul class="nav nav-treeview">
+						<li class="nav-item">
+							<a routerLink="/send-notification" class="nav-link" routerLinkActive="active">
+								<i class="fa fa-paper-plane nav-icon"></i>
+								<p>Send Notification</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a routerLink="/notification-list" class="nav-link" routerLinkActive="active">
+								<i class="fab fa fa-list nav-icon"></i>
+								<p>Notification List&nbsp;&nbsp;
+								</p>
+							</a>
+						</li>
+					</ul>
+				</li> -->
+				<!--<li class="nav-item">
+					<a class="nav-link" style="cursor: pointer;">
+						<i class="fas fa-cog nav-icon"></i>
+						<p>
+							Settings
+							<i class="fas fa-angle-left right"></i>
+						</p>
+					</a>
+					<ul class="nav nav-treeview">
+						<li class="nav-item">
+						<a class="nav-link" (click)="openModal()" data-toggle="modal" style="cursor: pointer;" data-target="#passwordModal">
+							<i class="fas fa-lock mr-2"></i> Change Password
+						</a>
+					   </li> 
+
+					   <li class="nav-item">
+						<a class="nav-link" (click)="openProfileModel()" data-toggle="modal" style="cursor: pointer;" data-target="#profileModal">
+							<i class="fas fa-user mr-2"></i> Update Profile
+						</a>
+					   </li>
+						
+						<li class="nav-item">
+						<a  class="nav-link" (click)="logout()" style="cursor: pointer;">
+							<i class="fas fa-sign-out-alt mr-2"></i> Log Out
+						</a>
+					</li>
+					 </ul>
+					<ul class="nav nav-treeview">
+						<li class="nav-item">
+							<a routerLink="/settings" [queryParams]="{plateform: 'android'}" class="nav-link" routerLinkActive="active">
+								<i class="fab fa-android nav-icon"></i>
+								<p>Play Store</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a routerLink="/settings" [queryParams]="{plateform: 'ios'}" class="nav-link" routerLinkActive="active">
+								<i class="fab fa-apple nav-icon"></i>
+								<p>App Store</p>
+							</a>
+						</li>
+					</ul> -->
+
+
+			</ul>
+		</nav>
+	</div>
+</aside>
+
+<app-update-password-modal *ngIf="isModalOpen"></app-update-password-modal>
+<app-update-profile-modal *ngIf="isProfileModelOpen" (toUpdateUser)="toUpdateUser()"></app-update-profile-modal>

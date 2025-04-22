@@ -1,0 +1,94 @@
+<section class="content h-fit-to-screen pt-2">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-12">
+				<div class="card">
+					<div class="card-header">
+						<h3 class="card-title">Notification List
+							<button type="button" (click)="openModal()" class="btn btn-sm rounded-0 btn-primary mx-4"
+								data-toggle="modal" data-target="#notificationModel">
+								<i class="fas fa-plus"></i>&nbsp;
+								Add Notification
+							</button>
+						</h3>
+					</div>
+
+					<div class="card-body">
+						<table id="example2" *ngIf="notificationData.length != 0"
+							class="table table-bordered table-hover data-table dataTable dtr-inline mb-2">
+							<thead>
+								<tr>
+									<th *ngFor="let row of columnTitles">{{row.column}}</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let notification of notificationData; index as i;">
+									<td>{{i+1}}</td>
+									<td class="img-cust-width" >
+										<img  *ngIf="notification.image_name"  class="img-fluid" src="{{notification.image_name}}">
+									</td>
+									<td>{{notification.title}}</td>
+									<td>{{notification.description}}</td>
+									<td>
+										<button type="button" (click)="edit(notification)"
+											class="btn btn-sm rounded-0 mt-1 btn-success mx-1" data-toggle="modal"
+											data-target="#notificationModel">Edit
+										</button>
+										<button type="button" (click)="delete(notification._id)"
+											class="btn btn-sm rounded-0 mt-1 btn-danger mx-1" data-toggle="modal"
+											data-target="#notificationModel">Delete
+										</button>
+										<button type="button" (click)="onSendNotification(notification._id)" class="btn btn-sm rounded-0 mt-1 btn-primary mx-1"
+											data-toggle="modal">Send
+										</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+
+						<pagination-controls *ngIf="notificationData?.length != 0" (pageChange)="p = $event"
+							class="float-right"></pagination-controls>
+						<div *ngIf="notificationData.length == 0">
+							<h5 class="text-center">Oops! You have not added bonus </h5>
+						</div>
+						<app-notification-model *ngIf="isModalOpen" [modalData]="modalData"
+							(getBannerDetails)="getBannerDetails()"></app-notification-model>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</section>
+
+
+
+
+
+
+
+<!-- 
+
+
+
+<table id="example2" *ngIf="notificationData.length != 1"
+							class="table table-bordered table-hover data-table dataTable dtr-inline mb-2">
+							<thead>
+								<tr>
+									<th *ngFor="let row of columnTitles">{{row.column}}</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let notification of notificationData; index as i;">
+									<td>{{i+1}}</td>
+									<td>{{notification.title}}</td>
+									<td>{{notification.description}}</td>
+									<td>
+										<button type="button" class="btn btn-sm rounded-0 mt-1 btn-success mx-1">Edit
+										</button>
+										<button type="button" class="btn btn-sm rounded-0 mt-1 btn-danger mx-1">Delete
+										</button>
+									</td>
+								</tr>
+							</tbody>
+						</table> -->

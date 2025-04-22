@@ -1,0 +1,46 @@
+<div class="modal fade" id="tdsViewModal" tabindex="-1" role="dialog" aria-labelledby="tdsViewModalLabel"
+	aria-hidden="true" data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog" *ngIf="!modalData.id">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 *ngIf="!modalData._id" class="modal-title" id="tdsViewModalLabel">Form16 List</h4>
+				<button type="button" id="close" class="close" (click)="isModalOpen = false" data-dismiss="modal">
+					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form (keydown.enter)="$event.preventDefault();">
+					<div class="form-group">
+						<div class="row" *ngIf="pdfList.length > 0; else noDataMessage">
+							<table style="border-collapse: collapse; width: 100%;">
+								<thead>
+									<tr>
+										<th style="border: 1px solid black; padding: 8px; background-color: #f2f2f2;">
+											Quarter Number</th>
+										<th style="border: 1px solid black; padding: 8px; background-color: #f2f2f2;">
+											Name</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr *ngFor="let document of pdfList">
+										<td style="border: 1px solid black; padding: 8px;">{{ document.no }}</td>
+										<td style="border: 1px solid black; padding: 8px;">
+											<a [href]="document.url" target="_blank"
+												style="text-decoration: none; color: blue;">{{ document.name }}</a>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<ng-template #noDataMessage>
+							<p>No data</p>
+						</ng-template>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" (click)="isModalOpen = false" class="btn btn-dark"
+					data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>

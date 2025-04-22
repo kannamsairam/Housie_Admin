@@ -1,0 +1,18 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+    commands:
+      - npm install -g @angular/cli
+  build:
+    commands:
+      - npm install --force
+      - npm run build
+      - aws s3 rm s3://admin.dreamhousie.com/ --recursive
+      - aws s3 cp dist/housie/ s3://admin.dreamhousie.com/ --recursive
+artifacts:
+  files:
+    - '**/*'
+  base-directory: dist/

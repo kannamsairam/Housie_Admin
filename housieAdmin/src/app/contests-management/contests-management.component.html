@@ -1,0 +1,125 @@
+<button (click)="addGame()" type="button" class="btn btn-sm rounded-0 btn-primary my-2 mx-1" data-toggle="modal"
+	data-target="#myModal">
+	<i class="ion ion-android-add"></i>
+	Add New Game
+</button>
+	<mat-form-field appearance="standard" id="search">
+		<!-- <label>Search</label> -->
+		<input matInput (keyup)="applyFilter($event)" placeholder="Search.." #input id="search" class="setSearch">
+	</mat-form-field>
+
+<mat-tab-group  [selectedIndex]="tabVal" animationDuration="0ms" (selectedTabChange)="onTabChanged($event);">
+	<mat-tab label="Ongoing Games">
+
+		<app-game-table [dataSource]="dataSource" [tabIndex]="tabIndex"  (getGame)="getGame()" > </app-game-table>
+
+		<!-- <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8">
+			<ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay, index as i">
+				<th mat-header-cell *matHeaderCellDef>{{tableHeader[i]}}</th>
+				<td mat-cell *matCellDef="let element"> {{element[column]}}</td>
+			</ng-container>
+
+			<ng-container matColumnDef="expandedDetail">
+				<td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
+					<div class="example-element-detail"
+						[@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'" style="display: block;">
+						<div style="width: 100%;">
+							<div style="width: 100%;background-color:#d1d1d1;">
+								<mat-button-toggle-group class="set" name="fontStyle" aria-label="Font Style">
+									<mat-button-toggle><span class="bold">Reg. Start Date :
+										</span>{{element.registrationStartDateTime | date:'yyyy-MM-dd'}}
+									</mat-button-toggle>
+									<mat-button-toggle value="italic"><span class="bold">Reg. Start time :
+										</span>{{element.registrationStartDateTime | date:'hh:mm'}}</mat-button-toggle>
+								</mat-button-toggle-group>
+								<mat-button-toggle-group class="set" name="fontStyle" aria-label="Font Style">
+									<mat-button-toggle><span class="bold">Reg. Close Date :
+										</span>{{element.registrationCloseDateTime | date:'yyyy-MM-dd'}}
+									</mat-button-toggle>
+									<mat-button-toggle value="italic"><span class="bold">Reg. Close time :
+										</span>{{element.registrationCloseDateTime | date:'hh:mm'}}</mat-button-toggle>
+								</mat-button-toggle-group>
+								<mat-button-toggle-group class="set" name="fontStyle" aria-label="Font Style">
+									<mat-button-toggle><span class="bold">Game Start Date :
+										</span>{{element.gameStartDateTime | date:'yyyy-MM-dd'}}</mat-button-toggle>
+									<mat-button-toggle value="italic"><span class="bold">Game Start time :
+										</span>{{element.gameStartDateTime | date:'hh:mm'}}</mat-button-toggle>
+								</mat-button-toggle-group>
+							</div>
+							<table class="mytable">
+								<tr class="mytr">
+									<th class="myth"></th>
+									<th class="myth">Number Of Winners</th>
+									<th class="myth">Winning Amount</th>
+								</tr>
+								<tr>
+									<th class="myth">Jald Five</th>
+									<td class="mytd">{{element.jaldiWinners}}</td>
+									<td class="mytd">{{element.jaldiPrizeAmount}}</td>
+								</tr>
+								<tr>
+									<th class="myth">1st Row</th>
+									<td class="mytd">{{element.firstLineWinners}}</td>
+									<td class="mytd">{{element.firstLinePrizeAmount}}</td>
+								</tr>
+								<tr>
+									<th class="myth">2nd Row</th>
+									<td class="mytd">{{element.secondLineWinners}}</td>
+									<td class="mytd">{{element.secondLinePrizeAmount}}</td>
+								</tr>
+								<tr>
+									<th class="myth">3rd Row</th>
+									<td class="mytd">{{element.thirdLineWinners}}</td>
+									<td class="mytd">{{element.thirdLinePrizeAmount}}</td>
+								</tr>
+								<tr>
+									<th class="myth">Four Corner</th>
+									<td class="mytd">{{element.cornerWinners}}</td>
+									<td class="mytd">{{element.cornerPrizeAmount}}</td>
+								</tr>
+								<tr>
+									<th class="myth">Full House</th>
+									<td class="mytd">{{element.fullHousieWinners}}</td>
+									<td class="mytd">{{element.fullHousiePrizeAmount}}</td>
+								</tr>
+							</table>
+						</div><br>
+						<div style="width: 100%;">
+							<button mat-raised-button color="warn" (click)="delete(element._id)"
+								style="float: right;margin-bottom: 10px;margin-left: 10px;">Delete</button>
+
+							<button mat-raised-button color="accent"
+								style="float: right;margin-bottom: 10px;margin-left: 10px;"
+								(click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">Cancel</button>
+							<button mat-raised-button color="primary" style="float: right;margin-bottom: 10px;"
+								(click)="onEditGame(element)">Edit</button>
+
+						</div>
+					</div>
+				</td>
+			</ng-container>
+
+			<tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+			<tr mat-row *matRowDef="let element; columns: columnsToDisplay;" class="example-element-row"
+				[class.example-expanded-row]="expandedElement === element"
+				(click)="expandedElement = expandedElement === element ? null : element">
+			</tr>
+			<tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+		</table> -->
+
+
+	</mat-tab>
+	<mat-tab label="Upcoming Games">
+		<app-game-table [dataSource]="dataSource"  [tabIndex]="tabIndex"  (getGame)="getGame()" > </app-game-table>
+	</mat-tab>
+	<mat-tab label="Past Games">
+		<app-game-table [dataSource]="dataSource" [tabIndex]="tabIndex" (getGame)="getGame()" > </app-game-table>
+	</mat-tab>
+	<mat-tab label="Cancelled Games">
+		<app-game-table [dataSource]="dataSource" [tabIndex]="tabIndex" (getGame)="getGame()" > </app-game-table>
+	</mat-tab>
+</mat-tab-group>
+
+<mat-paginator [pageSizeOptions]="[50,100]" showFirstLastButtons
+										aria-label="Select page of periodic elements">
+									</mat-paginator>

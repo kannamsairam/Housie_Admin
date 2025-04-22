@@ -1,0 +1,83 @@
+<div class="d-flex justify-content-between p-2">
+	<h3 class="card-title">Questions</h3>
+	<div>
+		<a routerLink="/quiz-management" class="text-color-primary">Questions</a> 
+		<span> &#47;
+			<a >Questions Management</a>
+		</span>
+	</div>
+</div>
+<section class="content h-fit-to-screen pt-2">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-12">
+				<div class="card" *ngIf="!viewEdit">
+					<div class="card-header" *ngIf="allQuestions.length != 90 || allQuestions.length > 90">
+						<button type="button" (click)="openModal()" class="btn btn-sm rounded-0 btn-primary" data-toggle="modal" data-target="#quizModal"> 
+							<i class="ion ion-android-add"></i> 
+							Add New Questions
+						</button>
+					</div>
+					<div class="card-body">
+						<table *ngIf="allQuestions.length != 0" id="example2" class="table table-bordered table-hover data-table dataTable dtr-inline mb-2">
+							<thead>
+								<tr>
+									<th>S.No</th>
+									<th>Image</th>
+									<th>Question</th>
+									<th>Option1</th>
+									<th>Option2</th>
+                                    <th>Answer</th>
+                                    <th>Action</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let row of allQuestions  | paginate: { itemsPerPage: 10, currentPage: p }; let i = index">
+                                    <td>{{10 *(p-1)+i+1}}</td>
+									<td ><img src="{{ row.image_name }}" alt="" width="100px"></td>
+                                    <td>{{row.question}}</td>
+                                    <td>{{row.option_1}}</td>
+                                    <td>{{row.option_2}}</td>
+                                    <td>{{row.answer}}</td>
+									<td *ngIf="row.updatedAt">{{row.createdAt}}</td>
+									<td>
+										<button type="button" class="btn btn-sm rounded-0 mt-1 btn-info mx-1" (click)="passId(row)" data-toggle="modal" data-target="#quizModal">Edit</button>
+										<button type="button" class="btn btn-sm rounded-0 mt-1 btn-danger mx-1" (click)="delete(row._id)" data-toggle="modal" data-target="#quizModal">Delete</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<pagination-controls *ngIf="allQuestions.length != 0" (pageChange)="p = $event" class="float-right"></pagination-controls>
+					
+						<div *ngIf="allQuestions.length == 0">
+							<h3 class="text-center">No questions added.</h3>
+						</div>
+					</div>
+					<app-quiz-modal *ngIf="isModalOpen" (getQuiz)="getQuestions()" [modalData]="modalData" [buttonType]="buttonType"></app-quiz-modal>
+				</div>
+
+				<!-- <div class="card" *ngIf="viewEdit">
+					<div class="card-header">
+						<div class="d-flex justify-content-between">
+							<div>
+								<h3 class="card-title">Quiz Management</h3>
+								<button type="button" id="addQuestion" (click)="buttonType = 'question'; isModalOpen = true" class="btn btn-sm rounded-0 btn-primary mx-4" data-toggle="modal" data-target="#quizModal"> 
+									<i class="ion ion-android-add"></i> 
+									Add New Question
+								</button>
+							</div>
+							
+						</div>
+					</div>
+					<div class="card-body">
+						<app-management-table 
+							[dashBoardData]="dashBoardData" [columnTitles]="columnTitles" >
+						</app-management-table>
+					</div>
+					<app-quiz-modal *ngIf="buttonType == 'question' && isModalOpen" [modalData]="modalData"  [buttonType]="buttonType"></app-quiz-modal>
+				</div> -->
+			</div>
+		</div>
+	</div>
+</section>
+<app-loader [type]=2 *ngIf="dataLoader"></app-loader>

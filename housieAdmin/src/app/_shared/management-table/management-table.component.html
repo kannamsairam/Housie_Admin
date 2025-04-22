@@ -1,0 +1,48 @@
+<table id="example2" class="table table-bordered table-hover data-table dataTable dtr-inline mb-2">
+	<thead>
+		<tr>
+			<th *ngFor="let row of columnTitles">{{row.column}}</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr *ngFor="let row of dashBoardData  | paginate: { itemsPerPage: 10, currentPage: p }; let i = index">
+			<td *ngIf="row.name">
+				<!-- <div>
+					<span *ngIf="row.name">{{row.name}}</span>
+				</div> -->
+				
+
+				<!-- <button (click)="getClickedButton(element.btn1, i)" *ngIf="element.btn1 && element.btn1 == 'ViewEdit'" type="button" class="btn btn-sm rounded-0 mt-1 btn-info mx-1">View&#92;Edit</button>
+
+				<button (click)="getClickedButton(element.btn1, i)" *ngIf="element.btn1 && element.btn1 == 'View'" type="button" class="btn btn-sm rounded-0 mt-1 btn-info mx-1">{{ element.btn1 }}</button>
+				<button (click)="getClickedButton(element.btn2, i)" *ngIf="element.btn2 && element.btn2 == 'Inactive'" type="button" class="btn btn-sm rounded-0 mt-1 btn-warning mx-1">{{ element.btn2 }}</button>
+				<button (click)="getClickedButton(element.btn3, i)" *ngIf="element.btn3 && element.btn3 == 'Block'" type="button" class="btn btn-sm rounded-0 mt-1 btn-danger mx-1">{{ element.btn3 }}</button>
+				<button (click)="getClickedButton(element.btn4, i)" *ngIf="element.btn4 && element.btn4 == 'Delete'" type="button" class="btn btn-sm rounded-0 mt-1 btn-danger mx-1">{{ element.btn4 }}</button>
+
+				<button (click)="getClickedButton(element.btn1, i)" *ngIf="element.btn1 && element.btn1 == 'Edit'" type="button" class="btn btn-sm rounded-0 mt-1 btn-success mx-1">{{ element.btn1 }}</button>
+				<button (click)="getClickedButton(element.btn2, i)" *ngIf="element.btn2 && element.btn2 == 'Delete'" type="button" class="btn btn-sm rounded-0 mt-1 btn-danger mx-1">{{ element.btn2 }}</button>
+				
+				<button (click)="getClickedButton(element.btn1, i)" *ngIf="element.btn1 && element.btn1 == 'Accept'" type="button" class="btn btn-sm rounded-0 mt-1 btn-success mx-1">{{ element.btn1 }}</button>
+				<button (click)="getClickedButton(element.btn2, i)" *ngIf="element.btn2 && element.btn2 == 'Reject'" type="button" class="btn btn-sm rounded-0 mt-1 btn-warning mx-1">{{ element.btn2 }}</button>
+				<button (click)="getClickedButton(element.btn3, i)" *ngIf="element.btn3 && element.btn3 == 'Delete'" type="button" class="btn btn-sm rounded-0 mt-1 btn-danger mx-1">{{ element.btn3 }}</button> -->
+			
+				
+				<!-- {{element.btn1 && element.btn1 == 'View&#92;Edit'}} -->
+			</td>
+			<!-- <td *ngIf="row.email">{{row.email}}</td>
+			<td *ngIf="row.mobile">{{row.mobile}}</td>
+			<td>
+				<span *ngIf="row.isBlocked">Yes</span>
+				<span *ngIf="!row.isBlocked">No</span>
+			</td>
+			<td *ngIf="row.status">{{row.status}}</td>
+			<td>
+				<span *ngIf="row.status">Active</span>
+				<span *ngIf="!row.status">Inactive</span>
+			</td>
+			<td *ngIf="row.createdAt">{{row.createdAt}}</td>
+			<td *ngIf="row.updatedAt">{{row.updatedAt}}</td> -->
+		</tr>
+	</tbody>
+</table>
+<pagination-controls (pageChange)="p = $event" class="float-right"></pagination-controls>

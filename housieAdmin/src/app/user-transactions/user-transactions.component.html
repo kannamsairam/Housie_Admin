@@ -1,0 +1,162 @@
+<section class="content h-fit-to-screen pt-2">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-12">
+				<div class="card">
+					<div class="card-header">
+						<h3 class="card-title">User Transactions</h3>
+					</div>
+
+					<div class="row">
+						<div class="col-lg-12 pl-4 pt-3 pr-4 pb-0">
+							<form [formGroup]="filterForm" novalidate>
+								<div class="form-group">
+									<div class="row">
+										<div class="col-3 d-picker">
+											<!-- <div class="input-container">
+												<label for="balwallet">From Date<span
+														class="text-danger">*</span></label>
+												<i class="fa fa-calendar icon"></i>
+												<input type="text" autocomplete="off" id="fromDate" class="form-control"
+													bsDatepicker formControlName="fromDate"
+													[bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+													placeholder="DD/MM/YYYY" required />
+											</div> -->
+											<mat-form-field>
+												<mat-label>From (mm-dd-yyyy)</mat-label>
+												<input matInput [matDatepicker]="picker" formControlName="fromDate">
+												<!-- <mat-hint>MM/DD/YYYY</mat-hint> -->
+												<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+												<mat-datepicker #picker></mat-datepicker>
+											</mat-form-field>
+										</div>
+										<div class="col-3 d-picker">
+											<!-- <div class="input-container">
+												<label for="balwallet">To Date<span class="text-danger">*</span></label>
+												<i class="fa fa-calendar icon"></i>
+												<input type="text" autocomplete="off" id="toDate" class="form-control"
+													bsDatepicker formControlName="toDate"
+													[bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+													placeholder="DD/MM/YYYY" required />
+											</div> -->
+											<mat-form-field>
+												<mat-label>To (mm-dd-yyyy)</mat-label>
+												<input matInput [matDatepicker]="picker1" formControlName="toDate">
+												<!-- <mat-hint>MM/DD/YYYY</mat-hint> -->
+												<mat-datepicker-toggle matSuffix [for]="picker1">
+												</mat-datepicker-toggle>
+												<mat-datepicker #picker1></mat-datepicker>
+											</mat-form-field>
+										</div>
+										<div class="col-2 mt-2">
+											<label for="email">Email<span class="text-danger">*</span></label>
+											<input type="email" autocomplete="off" id="email" name="email"
+												class="form-control" formControlName="email" required />
+											<!-- <div class="text-danger" [hidden]="email.valid || email.pristine">Email is required</div> -->
+										</div>
+										<div class="col-2 mt-2">
+											<label for="phoneno">Phone No.<span class="text-danger">*</span></label>
+											<input type="number" autocomplete="off" id="phoneno" name="phoneno"
+												class="form-control" formControlName="mobile" required />
+											<!-- <div class="text-danger" [hidden]="phoneno.valid || phoneno.pristine">Phone No. is required</div> -->
+										</div>
+										<div class="col-2 t-btns">
+											<button type="submit" (click)="onSubmit()"
+												class="btn btn-primary ">Submit</button>
+											<button type="submit" (click)="onReset()"
+												class="btn btn-primary">Reset</button>
+										</div>
+
+
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+
+					<div class="card-body">
+						<div class="mat-elevation-z8">
+							<table mat-table [dataSource]="dashBoardData" matSort>
+
+								<ng-container matColumnDef="name">
+									<th mat-header-cell *matHeaderCellDef mat-sort-header>User Name </th>
+									<td mat-cell *matCellDef="let element">{{element.username}}</td>
+								</ng-container>
+
+								<ng-container matColumnDef="email">
+									<th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+									<td mat-cell *matCellDef="let element">
+										{{element.email}}
+									</td>
+								</ng-container>
+
+								<ng-container matColumnDef="mobile">
+									<th mat-header-cell *matHeaderCellDef mat-sort-header> Mobile</th>
+									<td mat-cell *matCellDef="let element">
+										{{element.mobile}}
+									</td>
+								</ng-container>
+								<ng-container matColumnDef="amount">
+									<th mat-header-cell *matHeaderCellDef mat-sort-header>Amount</th>
+									<td mat-cell *matCellDef="let element">
+										{{element.amount | number:'1.0-0'}}
+									</td>
+								</ng-container>
+
+								<ng-container matColumnDef="new_balance">
+									<th mat-header-cell *matHeaderCellDef mat-sort-header>New Balance</th>
+									<td mat-cell *matCellDef="let element">
+										{{element.new_balance | number:'1.0-0'}}
+									</td>
+								</ng-container>
+								<ng-container matColumnDef="old_balance">
+									<th mat-header-cell *matHeaderCellDef mat-sort-header>Old Balance</th>
+									<td mat-cell *matCellDef="let element">
+										{{element.old_balance | number:'1.0-0' }}
+									</td>
+								</ng-container>
+
+								<ng-container matColumnDef="type">
+									<th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
+									<td mat-cell *matCellDef="let element">
+										{{element.type}}
+									</td>
+								</ng-container>
+
+								<ng-container matColumnDef="createdAt">
+									<th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+									<td mat-cell *matCellDef="let element">
+										{{element.createdAt | date: 'dd/MM/yyyy'}}
+									</td>
+								</ng-container>
+
+								<ng-container matColumnDef="status">
+									<th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+									<td mat-cell *matCellDef="let element">
+										{{element.status | titlecase}}
+									</td>
+								</ng-container>
+
+								<ng-container matColumnDef="description">
+									<th mat-header-cell *matHeaderCellDef mat-sort-header>Reason</th>
+									<td mat-cell *matCellDef="let element" id="reason">
+										{{element.description}}
+									</td>
+								</ng-container>
+
+								<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+								<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+							</table>
+
+							<mat-paginator [pageSizeOptions]="[50, 100]" showFirstLastButtons
+								aria-label="Select page of periodic elements">
+							</mat-paginator>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</section>

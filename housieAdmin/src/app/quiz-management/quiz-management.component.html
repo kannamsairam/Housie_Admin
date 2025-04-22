@@ -1,0 +1,72 @@
+<div class="d-flex justify-content-between p-2">
+	<h3 class="card-title">Quiz</h3>
+	<div *ngIf="viewEdit">
+		<a  class="text-color-primary" (click)="viewEdit = false; navigateTo()">Quiz</a> 
+		<span> &#47;
+			<a (click)="viewEdit = true; navigateTo()">Quize Management</a>
+		</span>
+	</div>
+</div>
+<section class="content h-fit-to-screen pt-2">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-12">
+				<div class="card" *ngIf="!viewEdit">
+					<div class="card-header">
+						<button type="button" (click)="buttonType = 'set'; isModalOpen = true" class="btn btn-sm rounded-0 btn-primary" data-toggle="modal" data-target="#quizModal"> 
+							<i class="ion ion-android-add"></i> 
+							Create New Set
+						</button>
+					</div>
+					<div class="card-body">
+						<table *ngIf="dashBoardData.length != 0" id="example2" class="table table-bordered table-hover data-table dataTable dtr-inline mb-2">
+							<thead>
+								<tr>
+									<th *ngFor="let row of columnTitles">{{row.column}}</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let row of dashBoardData  | paginate: { itemsPerPage: 10, currentPage: p }; let i = index">
+									<td *ngIf="row.name">{{row.name}}</td>
+									<td *ngIf="row.updatedAt">{{row.updatedAt | date: 'dd/MM/yyyy'}}</td>
+									<td>
+										<button type="button" class="btn btn-sm rounded-0 mt-1 btn-info mx-1" (click)="passId(row._id)">View&#92;Edit</button>
+										<button type="button" class="btn btn-sm rounded-0 mt-1 btn-danger mx-1" (click)="delete(row._id)" data-toggle="modal" data-target="#quizModal">Delete</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<pagination-controls *ngIf="dashBoardData.length != 0" (pageChange)="p = $event" class="float-right"></pagination-controls>
+						<div *ngIf="dashBoardData.length == 0">
+							<h5 class="text-center">Oops! You have not added set yet.</h5>
+						</div>
+					</div>
+					<app-quiz-modal *ngIf="isModalOpen" [modalData]="modalData" (getQuiz)="getQuiz()" [buttonType]="buttonType"></app-quiz-modal>
+				</div>
+
+				<div class="card" *ngIf="viewEdit">
+					<div class="card-header">
+						<div class="d-flex justify-content-between">
+							<div>
+								<h3 class="card-title">Quiz Management</h3>
+								<button type="button" id="addQuestion" (click)="buttonType = 'question'; isModalOpen = true" class="btn btn-sm rounded-0 btn-primary mx-4" data-toggle="modal" data-target="#quizModal"> 
+									<i class="ion ion-android-add"></i> 
+									Add New Question
+								</button>
+							</div>
+						<!-- <h3 class="card-title">{{setName}}</h3> -->
+							
+						</div>
+					</div>
+					<div class="card-body">
+						<app-management-table 
+							[dashBoardData]="dashBoardData" [columnTitles]="columnTitles" (buttonClicked)="buttonClickedInChild($event)">
+						</app-management-table>
+					</div>
+					<app-quiz-modal *ngIf="buttonType == 'question' && isModalOpen" [modalData]="modalData" (getQuiz)="getQuiz()" [buttonType]="buttonType"></app-quiz-modal>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<app-loader [type]=2 *ngIf="dataLoader"></app-loader>

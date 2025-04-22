@@ -1,0 +1,39 @@
+
+	<div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="userModalLabel">User Wallet Management</h4>
+					<button type="button" id="close" (click)="isModalOpen = false" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+							class="sr-only">Close</span></button>
+				</div>
+				<div class="modal-body">
+					<form #filterform="ngForm" (ngSubmit)="onSubmit(filterform)"  novalidate>
+						<div class="form-group">
+							<div class="row">
+								<div class="col-12 mt-2">
+									<label for="balwallet">Balance Wallet:<span class="text-danger">*</span></label>
+									<input type="text" autocomplete="off" id="balwallet"  class="form-control" [value]="120" [(ngModel)]="name1"  name="balwallet"  #balwallet="ngModel" required />
+									<div class="text-danger" [hidden]="balwallet.valid || balwallet.pristine">Balance Wallet is required</div>
+								</div>
+								<div class="col-12 mt-2">
+									<label for="winning">Winning Wallet:<span class="text-danger">*</span></label> 
+									<input type="number" autocomplete="off" id="winning" name="winning" class="form-control" [(ngModel)]="name2"  #winning="ngModel" required />
+									<div class="text-danger" [hidden]="winning.valid || winning.pristine">Winning Wallet is required</div>
+								</div>
+								<div class="col-12 mt-2">
+									<label for="bonus">Bonus Wallet:<span class="text-danger">*</span></label>
+									<input type="number" autocomplete="off" id="bonus" name="bonus" class="form-control"  [(ngModel)]="name3" #bonus="ngModel" required />
+									<div class="text-danger" [hidden]="bonus.valid || bonus.pristine">Bonus Wallet is required</div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button"  class="btn btn-dark" data-dismiss="modal">Cancel</button>
+					<button type="button" class="btn btn-primary" [disabled]="!filterform.valid">Update</button>
+				</div>
+			</div>
+		</div>
+	</div>	

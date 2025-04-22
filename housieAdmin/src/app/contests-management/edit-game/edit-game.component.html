@@ -1,0 +1,595 @@
+<section class="content h-fit-to-screen py-2 px-3">
+	<div class="container-fluid">
+		<div class="text-right">
+			<a class="text-color-primary" style="cursor: pointer;" (click)="navigateTo()">Contest Management</a>
+			<span> &#47;
+				<a>Update Game
+				</a>
+			</span>
+		</div>
+
+		<div class="card card-primary mt-2">
+			<div class="card-header">
+				<h3 class="card-title">Update Game</h3>
+			</div>
+			<div class="card-body">
+
+
+				<form [formGroup]="addGameFormGroup" (keydown.enter)="$event.preventDefault();">
+					<div class="form-group">
+						<div class="row">
+							<div class="col col-lg-4 mt-4">
+								<label for="name">Game/Tournament Name<span class="text-danger">*</span></label>
+								<input type="text" autocomplete="off" id="name" class="form-control"
+									formControlName="name" required />
+								<div class="text-danger"
+									*ngIf="f['name'].errors && f['name'].dirty || f['name'].touched">
+									<p class="error" *ngIf="f['name'].errors?.['required']">Name is required</p>
+								</div>
+							</div>
+
+							<div class="col col-lg-4 mt-4">
+								<label for="totalWinnings">Total Winnings<span class="text-danger">*</span></label>
+								<input type="number" autocomplete="off" id="totalWinnings" class="form-control"
+									formControlName="totalWinnings" OnlyNumber="true" required />
+								<div class="text-danger"
+									*ngIf="f['totalWinnings'].errors && f['totalWinnings'].dirty || f['totalWinnings'].touched">
+									<p class="error" *ngIf="f['totalWinnings'].errors?.['required']">Total Winnings is
+										required</p>
+								</div>
+							</div>
+
+							<div class="col col-lg-4 mt-4">
+								<label for="fees">Fees<span class="text-danger">*</span></label>
+								<input type="number" autocomplete="off" id="fees" class="form-control"
+									formControlName="fees" OnlyNumber="true" required />
+								<div class="text-danger"
+									*ngIf="f['fees'].errors && f['fees'].dirty || f['fees'].touched">
+									<p class="error" *ngIf="f['fees'].errors?.['required']">Fees is required</p>
+								</div>
+							</div>
+
+							<div class="col col-lg-4 mt-4">
+								<label for="totalTickets">Total Tickets<span class="text-danger">*</span></label>
+								<input type="number" autocomplete="off" id="totalTickets" class="form-control"
+									formControlName="totalTickets" OnlyNumber="true" required />
+								<div class="text-danger"
+									*ngIf="f['totalTickets'].errors && f['totalTickets'].dirty || f['totalTickets'].touched">
+									<p class="error" *ngIf="f['totalTickets'].errors?.['required']">Total Tickets is
+										required</p>
+								</div>
+							</div>
+						</div>
+
+						<div class="border-bottom mt-4"></div>
+
+						<div class="row mt-4">
+							<div class="col col-lg-4 mt-4">
+								<label for="jaldiPrizeAmount">Jaldi Five Prize Amount<span
+										class="text-danger">*</span></label>
+								<input type="number" autocomplete="off" id="jaldiPrizeAmount" class="form-control"
+									formControlName="jaldiPrizeAmount" OnlyNumber="true" required />
+								<div class="text-danger"
+									*ngIf="f['jaldiPrizeAmount'].errors && f['jaldiPrizeAmount'].dirty || f['jaldiPrizeAmount'].touched">
+									<p class="error" *ngIf="f['jaldiPrizeAmount'].errors?.['required']">Jaldi five prize
+										amount is required</p>
+								</div>
+							</div>
+
+							<div class="col col-lg-4 mt-4">
+								<label for="cornerPrizeAmount">4 Corners Prize Amount<span
+										class="text-danger">*</span></label>
+								<input type="number" autocomplete="off" id="cornerPrizeAmount" class="form-control"
+									formControlName="cornerPrizeAmount" OnlyNumber="true" required />
+								<div class="text-danger"
+									*ngIf="f['cornerPrizeAmount'].errors && f['cornerPrizeAmount'].dirty || f['cornerPrizeAmount'].touched">
+									<p class="error" *ngIf="f['cornerPrizeAmount'].errors?.['required']">4 Corners prize
+										amount is required</p>
+								</div>
+							</div>
+
+							<div class="col col-lg-4 mt-4">
+								<label for="firstLinePrizeAmount">1st Line Prize Amount<span
+										class="text-danger">*</span></label>
+								<input type="number" autocomplete="off" id="firstLinePrizeAmount" class="form-control"
+									formControlName="firstLinePrizeAmount" OnlyNumber="true" required />
+								<div class="text-danger"
+									*ngIf="f['firstLinePrizeAmount'].errors && f['firstLinePrizeAmount'].dirty || f['firstLinePrizeAmount'].touched">
+									<p class="error" *ngIf="f['firstLinePrizeAmount'].errors?.['required']">1st Line
+										prize amount is required</p>
+								</div>
+							</div>
+
+							<div class="col col-lg-4 mt-4">
+								<label for="secondLinePrizeAmount">2nd Line Prize Amount<span
+										class="text-danger">*</span></label>
+								<input type="number" autocomplete="off" id="secondLinePrizeAmount" class="form-control"
+									formControlName="secondLinePrizeAmount" OnlyNumber="true" required />
+								<div class="text-danger"
+									*ngIf="f['secondLinePrizeAmount'].errors && f['secondLinePrizeAmount'].dirty || f['secondLinePrizeAmount'].touched">
+									<p class="error" *ngIf="f['secondLinePrizeAmount'].errors?.['required']">2nd Line
+										prize amount is required</p>
+								</div>
+							</div>
+
+							<div class="col col-lg-4 mt-4">
+								<label for="thirdLinePrizeAmount">3rd Line Prize Amount<span
+										class="text-danger">*</span></label>
+								<input type="number" autocomplete="off" id="thirdLinePrizeAmount" class="form-control"
+									formControlName="thirdLinePrizeAmount" OnlyNumber="true" required />
+								<div class="text-danger"
+									*ngIf="f['thirdLinePrizeAmount'].errors && f['thirdLinePrizeAmount'].dirty || f['thirdLinePrizeAmount'].touched">
+									<p class="error" *ngIf="f['thirdLinePrizeAmount'].errors?.['required']">3rd Line
+										prize amount is required</p>
+								</div>
+							</div>
+
+							<div class="col col-lg-4 mt-4">
+								<label for="fullHousiePrizeAmount">Full Housie Prize Amount<span
+										class="text-danger">*</span></label>
+								<input type="number" autocomplete="off" id="fullHousiePrizeAmount" class="form-control"
+									formControlName="fullHousiePrizeAmount" OnlyNumber="true" required />
+								<div class="text-danger"
+									*ngIf="f['fullHousiePrizeAmount'].errors && f['fullHousiePrizeAmount'].dirty || f['fullHousiePrizeAmount'].touched">
+									<p class="error" *ngIf="f['fullHousiePrizeAmount'].errors?.['required']">Full housie
+										prize amount is required</p>
+								</div>
+							</div>
+						</div>
+						<div class="border-bottom mt-4"></div>
+
+						<div class="row mt-4">
+
+							<div class="col col-lg-4 mt-4">
+								<label for="jaldiWinners">Jaldi Five Winners<span class="text-danger">*</span></label>
+								<input type="number" autocomplete="off" id="jaldiWinners" class="form-control"
+									formControlName="jaldiWinners" OnlyNumber="true" required />
+								<div class="text-danger"
+									*ngIf="f['jaldiWinners'].errors && f['jaldiWinners'].dirty || f['jaldiWinners'].touched">
+									<p class="error" *ngIf="f['jaldiWinners'].errors?.['required']">Jaldi five winners
+										is required</p>
+								</div>
+							</div>
+
+							<div class="col col-lg-4 mt-4">
+								<label for="cornerWinners">4 Corners Winners<span class="text-danger">*</span></label>
+								<input type="number" autocomplete="off" id="cornerWinners" class="form-control"
+									formControlName="cornerWinners" OnlyNumber="true" required />
+								<div class="text-danger"
+									*ngIf="f['cornerWinners'].errors && f['cornerWinners'].dirty || f['cornerWinners'].touched">
+									<p class="error" *ngIf="f['cornerWinners'].errors?.['required']">4 Corners winners
+										is required</p>
+								</div>
+							</div>
+
+							<div class="col col-lg-4 mt-4">
+								<label for="firstLineWinners">1st Line Winners<span class="text-danger">*</span></label>
+								<input type="number" autocomplete="off" id="firstLineWinners" class="form-control"
+									formControlName="firstLineWinners" OnlyNumber="true" required />
+								<div class="text-danger"
+									*ngIf="f['firstLineWinners'].errors && f['firstLineWinners'].dirty || f['firstLineWinners'].touched">
+									<p class="error" *ngIf="f['firstLineWinners'].errors?.['required']">1st Line winners
+										is required</p>
+								</div>
+							</div>
+
+							<div class="col col-lg-4 mt-4">
+								<label for="secondLineWinners">2nd Line Winners<span
+										class="text-danger">*</span></label>
+								<input type="number" autocomplete="off" id="secondLineWinners" class="form-control"
+									formControlName="secondLineWinners" OnlyNumber="true" required />
+								<div class="text-danger"
+									*ngIf="f['secondLineWinners'].errors && f['secondLineWinners'].dirty || f['secondLineWinners'].touched">
+									<p class="error" *ngIf="f['secondLineWinners'].errors?.['required']">2nd Line
+										winners is required</p>
+								</div>
+							</div>
+
+							<div class="col col-lg-4 mt-4">
+								<label for="thirdLineWinners">3rd Line Winners<span class="text-danger">*</span></label>
+								<input type="number" autocomplete="off" id="thirdLineWinners" class="form-control"
+									formControlName="thirdLineWinners" OnlyNumber="true" required />
+								<div class="text-danger"
+									*ngIf="f['thirdLineWinners'].errors && f['thirdLineWinners'].dirty || f['thirdLineWinners'].touched">
+									<p class="error" *ngIf="f['thirdLineWinners'].errors?.['required']">3rd Line winners
+										is required</p>
+								</div>
+							</div>
+
+							<div class="col col-lg-4 mt-4">
+								<label for="fullHousieWinners">Full Housie Winners<span
+										class="text-danger">*</span></label>
+								<input type="number" autocomplete="off" id="fullHousieWinners" class="form-control"
+									formControlName="fullHousieWinners" OnlyNumber="true" required />
+								<div class="text-danger"
+									*ngIf="f['fullHousieWinners'].errors && f['fullHousieWinners'].dirty || f['fullHousieWinners'].touched">
+									<p class="error" *ngIf="f['fullHousieWinners'].errors?.['required']">Full housie
+										winners is required</p>
+								</div>
+							</div>
+						</div>
+						<div class="border-bottom mt-4"></div>
+
+						<div class="row mt-4 time-date-field">
+							<div class="col col-lg-4 mt-4">
+								<label>Game/Tournament Registration Start Time & Date<span
+										class="text-danger">*</span></label>
+							</div>
+							<div class="col col-lg-4">
+								<!-- <input type="text" autocomplete="off" id="registrationStartTime" class="form-control" formControlName="registrationStartTime" required /> -->
+
+								<timepicker autocomplete="off" id="registrationStartTime"
+									formControlName="registrationStartTime" required lang="india"></timepicker>
+
+								<div class="text-danger"
+									*ngIf="f['registrationStartTime'].errors && f['registrationStartTime'].dirty || f['registrationStartTime'].touched">
+									<p class="error" *ngIf="f['registrationStartTime'].errors?.['required']">
+										Game/Tournament start time is required</p>
+								</div>
+							</div>
+							<div class="col col-lg-4 mt-4 date-picker">
+								<div class="input-container">
+									<i class="fa fa-calendar icon"></i>
+									<input type="text" autocomplete="off" id="registrationStartDate"
+										class="form-control" bsDatepicker [minDate]="minDate"
+										formControlName="registrationStartDate"
+										[bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" placeholder="DD/MM/YYYY"
+										required />
+								</div>
+								<div class="text-danger"
+									*ngIf="f['registrationStartDate'].errors && f['registrationStartDate'].dirty || f['registrationStartDate'].touched">
+									<p class="error" *ngIf="f['registrationStartDate'].errors?.['required']">
+										Game/Tournament start date is required</p>
+								</div>
+							</div>
+						</div>
+
+
+
+						<div class="row mt-4 time-date-field">
+							<div class="col col-lg-4 mt-4">
+								<label>Game/Tournament Registration Close Time & Date<span
+										class="text-danger">*</span></label>
+							</div>
+							<div class="col col-lg-4">
+								<!-- <input type="text" autocomplete="off" id="registrationCloseDate" class="form-control"
+									formControlName="registrationCloseDate" required /> -->
+								<timepicker autocomplete="off" id="registrationCloseDate"
+									formControlName="registrationCloseDate" required></timepicker>
+								<div class="text-danger"
+									*ngIf="f['registrationCloseDate'].errors && f['registrationCloseDate'].dirty || f['registrationCloseDate'].touched">
+									<p class="error" *ngIf="f['registrationCloseDate'].errors?.['required']">
+										Game/Tournament close time is required</p>
+								</div>
+							</div>
+							<div class="col col-lg-4 mt-4 date-picker">
+								<div class="input-container">
+									<i class="fa fa-calendar icon"></i>
+									<input type="text" autocomplete="off" id="registrationCloseTime"
+										class="form-control" bsDatepicker [minDate]="toGetMinDate()"
+										formControlName="registrationCloseTime"
+										[bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" placeholder="DD/MM/YYYY"
+										required />
+								</div>
+								<div class="text-danger"
+									*ngIf="f['registrationCloseTime'].errors && f['registrationCloseTime'].dirty || f['registrationCloseTime'].touched">
+									<p class="error" *ngIf="f['registrationCloseTime'].errors?.['required']">
+										Game/Tournament close date is required</p>
+								</div>
+							</div>
+						</div>
+
+						<div class="row time-date-field">
+							<div class="col col-lg-4 mt-4">
+								<label>Game/Tournament Start Time & Date<span class="text-danger">*</span></label>
+							</div>
+							<div class="col col-lg-4">
+								<!-- <input type="text" autocomplete="off" id="registrationStartCloseDate"
+									class="form-control" formControlName="registrationStartCloseDate" required /> -->
+
+								<timepicker autocomplete="off" id="gameStartDate" formControlName="gameStartDate"
+									required></timepicker>
+
+								<div class="text-danger"
+									*ngIf="f['gameStartDate'].errors && f['gameStartDate'].dirty || f['gameStartDate'].touched">
+									<p class="error" *ngIf="f['gameStartDate'].errors?.['required']">
+										Game/Tournament start time & close is required</p>
+								</div>
+							</div>
+							<div class="col col-lg-4 mt-4 date-picker">
+								<div class="input-container">
+									<i class="fa fa-calendar icon"></i>
+									<input type="text" autocomplete="off" id="gameStartTime" class="form-control"
+										bsDatepicker [minDate]="toGetMinDate()"formControlName="gameStartTime"
+										[bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }" placeholder="DD/MM/YYYY"
+										required />
+								</div>
+								<div class="text-danger"
+									*ngIf="f['gameStartTime'].errors && f['gameStartTime'].dirty || f['gameStartTime'].touched">
+									<p class="error" *ngIf="f['gameStartTime'].errors?.['required']">
+										Game/Tournament start time & close is required</p>
+								</div>
+							</div>
+						</div>
+						<div class="border-bottom mt-4"></div>
+
+						<div formArrayName="jaldiFive" class="mt-4">
+							<label>Jaldi Five</label>
+							<span class="mx-4">
+								<a type="button" class="btn-floating deep-purple" (click)="addjaldiFive('')">
+									<i class="fas fa-plus-circle" aria-hidden="true"></i>
+								</a>
+							</span>
+
+							<div class="row" *ngFor="let row of jaldiFive.controls; let i = index"
+								formGroupName="{{i}}">
+								<div class="col col-lg-3 mt-4">
+									<input type="number" autocomplete="off" id="firstCol" class="form-control"
+										formControlName="firstCol" required />
+									<!-- <div class="text-danger" *ngIf="row['firstCol'].errors && row['firstCol'].dirty || row['firstCol'].touched">
+								<p class="error" *ngIf="row['firstCol'].errors?.['required']">This field is required</p>
+							</div> -->
+								</div>
+								<div class="col col-lg-1 text-center mt-4">
+									<label>To</label>
+								</div>
+								<div class="col col-lg-3 mt-4">
+									<input type="number" autocomplete="off" id="secondCol" class="form-control"
+										formControlName="secondCol" required />
+									<!-- <div class="text-danger" *ngIf="f['secondCol'].errors && f['secondCol'].dirty || f['secondCol'].touched">
+								<p class="error" *ngIf="f['secondCol'].errors?.['required']">This field is required</p>
+							</div> -->
+								</div>
+
+								<div class="col col-lg-4 mt-4">
+									<input type="number" autocomplete="off" id="thirdCol" class="form-control"
+										formControlName="thirdCol" required />
+									<!-- <div class="text-danger" *ngIf="f['thirdCol'].errors && f['thirdCol'].dirty || f['thirdCol'].touched">
+								<p class="error" *ngIf="f['thirdCol'].errors?.['required']">This field is required</p>
+							</div> -->
+								</div>
+
+								<div class="col col-lg-1 mt-4" *ngIf="jaldiFive.controls.length != 1">
+									<a type="button" class="btn-floating deep-purple" (click)="deletejaldiFive(i)">
+										<i class="fas fa-minus-circle" aria-hidden="true"></i>
+									</a>
+								</div>
+							</div>
+						</div>
+						<div class="border-bottom mt-4"></div>
+
+						<div formArrayName="fourCorners" class="mt-4">
+							<label>4 Corners</label>
+							<span class="mx-4">
+								<a type="button" class="btn-floating deep-purple" (click)="addfourCorners('')">
+									<i class="fas fa-plus-circle" aria-hidden="true"></i>
+								</a>
+							</span>
+
+							<div class="row" *ngFor="let row of fourCorners.controls; let i = index"
+								formGroupName="{{i}}">
+								<div class="col col-lg-3 mt-4">
+									<input type="number" autocomplete="off" id="firstCol" class="form-control"
+										formControlName="firstCol" required />
+									<!-- <div class="text-danger" *ngIf="row['firstCol'].errors && row['firstCol'].dirty || row['firstCol'].touched">
+								<p class="error" *ngIf="row['firstCol'].errors?.['required']">This field is required</p>
+							</div> -->
+								</div>
+								<div class="col col-lg-1 text-center mt-4">
+									<label>To</label>
+								</div>
+								<div class="col col-lg-3 mt-4">
+									<input type="number" autocomplete="off" id="secondCol" class="form-control"
+										formControlName="secondCol" required />
+									<!-- <div class="text-danger" *ngIf="f['secondCol'].errors && f['secondCol'].dirty || f['secondCol'].touched">
+								<p class="error" *ngIf="f['secondCol'].errors?.['required']">This field is required</p>
+							</div> -->
+								</div>
+
+								<div class="col col-lg-4 mt-4">
+									<input type="number" autocomplete="off" id="thirdCol" class="form-control"
+										formControlName="thirdCol" required />
+									<!-- <div class="text-danger" *ngIf="f['thirdCol'].errors && f['thirdCol'].dirty || f['thirdCol'].touched">
+								<p class="error" *ngIf="f['thirdCol'].errors?.['required']">This field is required</p>
+							</div> -->
+								</div>
+
+								<div class="col col-lg-1 mt-4" *ngIf="fourCorners.controls.length != 1">
+									<a type="button" class="btn-floating deep-purple" (click)="deletefourCorners(i)">
+										<i class="fas fa-minus-circle" aria-hidden="true"></i>
+									</a>
+								</div>
+							</div>
+						</div>
+						<div class="border-bottom mt-4"></div>
+
+						<div formArrayName="firstLine" class="mt-4">
+							<label>1st Line</label>
+							<span class="mx-4">
+								<a type="button" class="btn-floating deep-purple" (click)="addfirstLine('')">
+									<i class="fas fa-plus-circle" aria-hidden="true"></i>
+								</a>
+							</span>
+
+							<div class="row" *ngFor="let row of firstLine.controls; let i = index"
+								formGroupName="{{i}}">
+								<div class="col col-lg-3 mt-4">
+									<input type="number" autocomplete="off" id="firstCol" class="form-control"
+										formControlName="firstCol" required />
+									<!-- <div class="text-danger" *ngIf="row['firstCol'].errors && row['firstCol'].dirty || row['firstCol'].touched">
+								<p class="error" *ngIf="row['firstCol'].errors?.['required']">This field is required</p>
+							</div> -->
+								</div>
+								<div class="col col-lg-1 text-center mt-4">
+									<label>To</label>
+								</div>
+								<div class="col col-lg-3 mt-4">
+									<input type="number" autocomplete="off" id="secondCol" class="form-control"
+										formControlName="secondCol" required />
+									<!-- <div class="text-danger" *ngIf="f['secondCol'].errors && f['secondCol'].dirty || f['secondCol'].touched">
+								<p class="error" *ngIf="f['secondCol'].errors?.['required']">This field is required</p>
+							</div> -->
+								</div>
+
+								<div class="col col-lg-4 mt-4">
+									<input type="number" autocomplete="off" id="thirdCol" class="form-control"
+										formControlName="thirdCol" required />
+									<!-- <div class="text-danger" *ngIf="f['thirdCol'].errors && f['thirdCol'].dirty || f['thirdCol'].touched">
+								<p class="error" *ngIf="f['thirdCol'].errors?.['required']">This field is required</p>
+							</div> -->
+								</div>
+
+								<div class="col col-lg-1 mt-4" *ngIf="firstLine.controls.length != 1">
+									<a type="button" class="btn-floating deep-purple" (click)="deletefirstLine(i)">
+										<i class="fas fa-minus-circle" aria-hidden="true"></i>
+									</a>
+								</div>
+							</div>
+						</div>
+						<div class="border-bottom mt-4"></div>
+
+						<div formArrayName="secondLine" class="mt-4">
+							<label>2nd Line</label>
+							<span class="mx-4">
+								<a type="button" class="btn-floating deep-purple" (click)="addsecondLine('')">
+									<i class="fas fa-plus-circle" aria-hidden="true"></i>
+								</a>
+							</span>
+
+							<div class="row" *ngFor="let row of secondLine.controls; let i = index"
+								formGroupName="{{i}}">
+								<div class="col col-lg-3 mt-4">
+									<input type="number" autocomplete="off" id="firstCol" class="form-control"
+										formControlName="firstCol" required />
+									<!-- <div class="text-danger" *ngIf="row['firstCol'].errors && row['firstCol'].dirty || row['firstCol'].touched">
+								<p class="error" *ngIf="row['firstCol'].errors?.['required']">This field is required</p>
+							</div> -->
+								</div>
+								<div class="col col-lg-1 text-center mt-4">
+									<label>To</label>
+								</div>
+								<div class="col col-lg-3 mt-4">
+									<input type="number" autocomplete="off" id="secondCol" class="form-control"
+										formControlName="secondCol" required />
+									<!-- <div class="text-danger" *ngIf="f['secondCol'].errors && f['secondCol'].dirty || f['secondCol'].touched">
+								<p class="error" *ngIf="f['secondCol'].errors?.['required']">This field is required</p>
+							</div> -->
+								</div>
+
+								<div class="col col-lg-4 mt-4">
+									<input type="number" autocomplete="off" id="thirdCol" class="form-control"
+										formControlName="thirdCol" required />
+									<!-- <div class="text-danger" *ngIf="f['thirdCol'].errors && f['thirdCol'].dirty || f['thirdCol'].touched">
+								<p class="error" *ngIf="f['thirdCol'].errors?.['required']">This field is required</p>
+							</div> -->
+								</div>
+
+								<div class="col col-lg-1 mt-4" *ngIf="secondLine.controls.length != 1">
+									<a type="button" class="btn-floating deep-purple" (click)="deletesecondLine(i)">
+										<i class="fas fa-minus-circle" aria-hidden="true"></i>
+									</a>
+								</div>
+							</div>
+						</div>
+						<div class="border-bottom mt-4"></div>
+
+						<div formArrayName="thirdLine" class="mt-4">
+							<label>3rd Line</label>
+							<span class="mx-4">
+								<a type="button" class="btn-floating deep-purple" (click)="addthirdLine('')">
+									<i class="fas fa-plus-circle" aria-hidden="true"></i>
+								</a>
+							</span>
+
+							<div class="row" *ngFor="let row of thirdLine.controls; let i = index"
+								formGroupName="{{i}}">
+								<div class="col col-lg-3 mt-4">
+									<input type="number" autocomplete="off" id="firstCol" class="form-control"
+										formControlName="firstCol" required />
+									<!-- <div class="text-danger" *ngIf="row['firstCol'].errors && row['firstCol'].dirty || row['firstCol'].touched">
+								<p class="error" *ngIf="row['firstCol'].errors?.['required']">This field is required</p>
+							</div> -->
+								</div>
+								<div class="col col-lg-1 text-center mt-4">
+									<label>To</label>
+								</div>
+								<div class="col col-lg-3 mt-4">
+									<input type="number" autocomplete="off" id="secondCol" class="form-control"
+										formControlName="secondCol" required />
+									<!-- <div class="text-danger" *ngIf="f['secondCol'].errors && f['secondCol'].dirty || f['secondCol'].touched">
+								<p class="error" *ngIf="f['secondCol'].errors?.['required']">This field is required</p>
+							</div> -->
+								</div>
+
+								<div class="col col-lg-4 mt-4">
+									<input type="number" autocomplete="off" id="thirdCol" class="form-control"
+										formControlName="thirdCol" required />
+									<!-- <div class="text-danger" *ngIf="f['thirdCol'].errors && f['thirdCol'].dirty || f['thirdCol'].touched">
+								<p class="error" *ngIf="f['thirdCol'].errors?.['required']">This field is required</p>
+							</div> -->
+								</div>
+
+								<div class="col col-lg-1 mt-4" *ngIf="thirdLine.controls.length != 1">
+									<a type="button" class="btn-floating deep-purple" (click)="deletethirdLine(i)">
+										<i class="fas fa-minus-circle" aria-hidden="true"></i>
+									</a>
+								</div>
+							</div>
+						</div>
+						<div class="border-bottom mt-4"></div>
+
+						<div formArrayName="fullHousie" class="mt-4">
+							<label>Full Housie</label>
+							<span class="mx-4">
+								<a type="button" class="btn-floating deep-purple" (click)="addfullHousie('')">
+									<i class="fas fa-plus-circle" aria-hidden="true"></i>
+								</a>
+							</span>
+
+							<div class="row" *ngFor="let row of fullHousie.controls; let i = index"
+								formGroupName="{{i}}">
+								<div class="col col-lg-3 mt-4">
+									<input type="number" autocomplete="off" id="firstCol" class="form-control"
+										formControlName="firstCol" required />
+									<!-- <div class="text-danger" *ngIf="row['firstCol'].errors && row['firstCol'].dirty || row['firstCol'].touched">
+								<p class="error" *ngIf="row['firstCol'].errors?.['required']">This field is required</p>
+							</div> -->
+								</div>
+								<div class="col col-lg-1 text-center mt-4">
+									<label>To</label>
+								</div>
+								<div class="col col-lg-3 mt-4">
+									<input type="number" autocomplete="off" id="secondCol" class="form-control"
+										formControlName="secondCol" required />
+									<!-- <div class="text-danger" *ngIf="f['secondCol'].errors && f['secondCol'].dirty || f['secondCol'].touched">
+								<p class="error" *ngIf="f['secondCol'].errors?.['required']">This field is required</p>
+							</div> -->
+								</div>
+
+								<div class="col col-lg-4 mt-4">
+									<input type="number" autocomplete="off" id="thirdCol" class="form-control"
+										formControlName="thirdCol" required />
+									<!-- <div class="text-danger" *ngIf="f['thirdCol'].errors && f['thirdCol'].dirty || f['thirdCol'].touched">
+								<p class="error" *ngIf="f['thirdCol'].errors?.['required']">This field is required</p>
+							</div> -->
+								</div>
+
+								<div class="col col-lg-1 mt-4" *ngIf="fullHousie.controls.length != 1">
+									<a type="button" class="btn-floating deep-purple" (click)="deletefullHousie(i)">
+										<i class="fas fa-minus-circle" aria-hidden="true"></i>
+									</a>
+								</div>
+							</div>
+						</div>
+						<div class="border-bottom mt-4"></div>
+					</div>
+					<div class="btn-wrap text-right">
+						<button type="button" (click)="addGame()" class="btn btn-primary">Update</button>
+					</div>
+				</form>
+
+			</div>
+		</div>
+	</div>
+</section>
+<!-- <app-loader [type]=2 *ngIf="dataLoader"></app-loader> -->

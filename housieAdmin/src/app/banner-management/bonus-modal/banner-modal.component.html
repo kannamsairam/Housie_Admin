@@ -1,0 +1,98 @@
+<div class="modal fade" id="bannerModal" tabindex="-1" role="dialog" aria-labelledby="bannerModalLabel"
+	aria-hidden="true" data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog" *ngIf="!modalData.id">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 *ngIf="!modalData._id" class="modal-title" id="bannerModalLabel">Add New Banner</h4>
+				<h4 *ngIf="modalData._id" class="modal-title" id="bannerModalLabel">Update Banner</h4>
+				<button type="button" id="close" class="close" (click)="isModalOpen = false" data-dismiss="modal">
+					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form [formGroup]="bannerDeatilsFormGroup" (keydown.enter)="$event.preventDefault();">
+					<div class="form-group">
+
+						<div class="row">
+							<!-- <div class="col-12">
+								<label for="bannerName">Name:<span class="text-danger">*</span></label>
+								<input type="text" autocomplete="off" id="bannerName" class="form-control" formControlName="bannerName" required />
+								<div class="text-danger"
+									*ngIf="f['bannerName'].errors && f['bannerName'].dirty || f['bannerName'].touched">
+									<p class="error" *ngIf="f['bannerName'].errors?.['required']">Set name is required</p>
+								</div>
+							</div> -->
+
+							<div class="col-12 mt-2">
+								<label for="banner_type">Banner Type:<span class="text-danger">*</span></label>
+								<select autocomplete="off" id="banner_type" class="form-control"
+									formControlName="banner_type">
+									<option value=1>Banner</option>
+									<option value=2>POP UP Banner</option>
+								</select>
+								<div class="text-danger"
+									*ngIf="f['banner_type'].errors && f['banner_type'].dirty || f['banner_type'].touched">
+									<p class="error" *ngIf="f['banner_type'].errors?.['required']">Banner type is required</p>
+								</div>
+							</div>
+
+							<div class="col-12 mt-2">
+								<label for="show_status">Show:<span class="text-danger">*</span></label>
+								<select autocomplete="off" id="show_status" class="form-control"
+									formControlName="show_status">
+									<option value=true>Yes</option>
+									<option value=false>No</option>
+								</select>
+								<div class="text-danger"
+									*ngIf="f['show_status'].errors && f['show_status'].dirty || f['show_status'].touched">
+									<p class="error" *ngIf="f['show_status'].errors?.['required']">Show is required</p>
+								</div>
+							</div>
+
+							<div class="col-12 mt-2">
+								<!-- <label for="files">Image<span class="text-danger" *ngIf="!this.modalData._id">*</span></label>
+								<input #imageInput type="file" accept="image/*" autocomplete="off" id="image" class="form-control border-0 p-0"
+								  (change)="fileChangeEvent($event)" required /> -->
+
+								<!-- <input #imageInput type="file" accept="image/*" (change)="processFile(imageInput)"> -->
+								<label class="btn btn-default" class="text-danger">*</label>
+									<img [src]="imageSrc" *ngIf="imageSrc" style="width:30%">
+									<input type="file" (change)="selectFile($event)">
+								
+								<p class="text-danger">{{imgError}}</p>
+							</div>							
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" (click)="isModalOpen = false" class="btn btn-dark" data-dismiss="modal"
+					[disabled]="dataLoader">Close</button>
+				<button type="button" (click)="addBanner()" class="btn btn-primary" (click)="isModalOpen = false"
+					[disabled]="bannerDeatilsFormGroup.invalid || dataLoader || !imageSrc">
+					<span *ngIf="modalData._id">Update</span>
+					<span *ngIf="!modalData._id">Add</span>
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal-dialog" *ngIf="modalData.id">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="bannerModalLabel">Delete Banner</h4>
+				<button type="button" id="close" class="close" (click)="isModalOpen = false" data-dismiss="modal"><span
+						aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+			</div>
+			<div class="modal-body">
+				<p>Are you sure you want to delete?</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" (click)="isModalOpen = false" class="btn btn-dark"
+					data-dismiss="modal">Cancel</button>
+				<button type="button" (click)="confirm()" class="btn btn-primary"
+					(click)="isModalOpen = false">Confirm</button>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,139 @@
+<div class="modal fade" id="quizModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+	data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog p-2" *ngIf="buttonType != 'delete' && buttonType != 'deleteQuestion'">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="myModalLabel">
+					<span *ngIf="buttonType == 'set'">Add New Set</span>
+					<span *ngIf="buttonType == 'question' && !modalData._id">Add New Question</span>
+					<span *ngIf="buttonType == 'question' && modalData._id">Update Question</span>
+				</h4>
+				<button type="button" class="close" (click)="isModalOpen = false" id="close" data-dismiss="modal"><span
+						aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+			</div>
+			<div class="modal-body">
+				<form [formGroup]="quizDeatilsFormGroup" (keydown.enter)="$event.preventDefault();">
+					<div class="form-group" *ngIf="buttonType == 'set'">
+						<div class="row">
+							<div class="col">
+								<label for="name">Set Name:<span class="text-danger">*</span></label>
+								<input type="text" autocomplete="off" id="name" class="form-control"
+									formControlName="name" required />
+								<div class="text-danger"
+									*ngIf="f['name'].errors && f['name'].dirty || f['name'].touched">
+									<p class="error" *ngIf="f['name'].errors?.['required']">Set name is required</p>
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+					<div formGroupName="questionDetails" class="form-group" *ngIf="buttonType == 'question'">
+
+						<div class="row">
+							<div class="col-12">
+								<label for="question">Question<span class="text-danger">*</span></label>
+								<input type="text" autocomplete="off" id="question" class="form-control"
+									formControlName="question" required />
+								<div class="text-danger"
+									*ngIf="quizDeatilsFormGroup.get('questionDetails')?.get('question')?.errors && quizDeatilsFormGroup.get('questionDetails')?.get('question')?.dirty || quizDeatilsFormGroup.get('questionDetails')?.get('question')?.touched">
+									<p class="error"
+										*ngIf="quizDeatilsFormGroup.get('questionDetails')?.get('question')?.errors?.['required']">
+										Question is required</p>
+								</div>
+							</div>
+
+							<div class="col-12 mt-2">
+								<label for="option_1">Option 1<span class="text-danger">*</span></label>
+								<input type="text" autocomplete="off" id="option_1" class="form-control"
+									formControlName="option_1" required />
+								<div class="text-danger"
+									*ngIf="quizDeatilsFormGroup.get('questionDetails')?.get('option_1')?.errors && quizDeatilsFormGroup.get('questionDetails')?.get('option_1')?.dirty || quizDeatilsFormGroup.get('questionDetails')?.get('option_1')?.touched">
+									<p class="error"
+										*ngIf="quizDeatilsFormGroup.get('questionDetails')?.get('option_1')?.errors?.['required']">
+										Option 1 is required</p>
+								</div>
+							</div>
+
+							<div class="col-12 mt-2">
+								<label for="option_2">Option 2<span class="text-danger">*</span></label>
+								<input type="text" autocomplete="off" id="option_2" class="form-control"
+									formControlName="option_2" required />
+								<div class="text-danger"
+									*ngIf="quizDeatilsFormGroup.get('questionDetails')?.get('option_2')?.errors && quizDeatilsFormGroup.get('questionDetails')?.get('option_2')?.dirty || quizDeatilsFormGroup.get('questionDetails')?.get('option_2')?.touched">
+									<p class="error"
+										*ngIf="quizDeatilsFormGroup.get('questionDetails')?.get('option_2')?.errors?.['required']">
+										Option 2 is required</p>
+								</div>
+							</div>
+
+							<div class="col-12 mt-2">
+								<label for="answer">Answer</label>
+								<div class="ml-3">
+									<input class="form-check-input" formControlName="answer" type="radio" name="answer"
+										id="answer" value="1" checked>
+									<label class="form-check-label" for="answer">Option 1 </label>
+									<input class="form-check-input ml-2" formControlName="answer" type="radio"
+										name="answer" id="answer" value="2">
+									<label class="form-check-label ml-4" for="answer">Option 2</label>
+								</div>
+								<div class="text-danger"
+									*ngIf="quizDeatilsFormGroup.get('questionDetails')?.get('answer')?.errors && quizDeatilsFormGroup.get('questionDetails')?.get('answer')?.dirty || quizDeatilsFormGroup.get('questionDetails')?.get('answer')?.touched">
+									<p class="error"
+										*ngIf="quizDeatilsFormGroup.get('questionDetails')?.get('answer')?.errors?.['required']">
+										Answer name is required</p>
+								</div>
+							</div>
+							<div class="col-12 mt-2">
+								<b class="text-danger">*</b>
+								<label class="btn btn-default">
+									<img [src]="imageSrc" *ngIf="imageSrc" style="width:100%">
+									<input type="file" (change)="selectFile($event)">
+								</label>
+							</div>
+
+							<!-- <div class="col-12 mt-2">
+								<label for="image">Image<span class="text-danger">*</span></label>
+								<input #imageInput type="file" accept="image/*" (change)="selectFile($event)"
+									onchange="console.log(event.target.files)" autocomplete="off" id="image"
+									class="form-control border-0 p-0" formControlName="image" required />
+							</div> -->
+						</div>
+
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" (click)="isModalOpen = false" class="btn btn-dark"
+					data-dismiss="modal">Close</button>
+				<button type="button" *ngIf="buttonType == 'set'" (click)="addSet()" class="btn btn-primary"
+					[disabled]="quizDeatilsFormGroup.invalid">Add</button>
+				<button type="button" *ngIf="buttonType == 'question'" (click)="addQuestion()" class="btn btn-primary">
+					<span *ngIf="!modalData._id">Add</span>
+					<span *ngIf="modalData._id">Update</span>
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal-dialog" *ngIf="buttonType == 'delete' || buttonType == 'deleteQuestion'">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="bannerModalLabel" *ngIf="buttonType == 'deleteQuestion'">Delete Question
+				</h4>
+				<h4 class="modal-title" id="bannerModalLabel" *ngIf="buttonType == 'delete'">Delete Set</h4>
+				<button type="button" id="close" class="close" (click)="isModalOpen = false" data-dismiss="modal"><span
+						aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+			</div>
+			<div class="modal-body">
+				<p>Are you sure you want to delete?</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" (click)="isModalOpen = false" class="btn btn-dark"
+					data-dismiss="modal">Cancel</button>
+				<button type="button" (click)="confirm()" class="btn btn-primary"
+					(click)="isModalOpen = false">Confirm</button>
+			</div>
+		</div>
+	</div>
+</div>

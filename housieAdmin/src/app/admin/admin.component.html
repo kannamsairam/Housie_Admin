@@ -1,0 +1,52 @@
+<app-loader [type]=2 *ngIf="dataLoader"></app-loader>
+<section class="content h-fit-to-screen pt-2">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-12">
+				<div class="card">
+					<div class="card-header">
+						<h3 class="card-title">Sub Admin Management</h3>
+						<button type="button" (click)="openModal()" id="addAdmin" class="btn btn-sm rounded-0 btn-primary mx-4" data-toggle="modal" data-target="#addAdminModal"> 
+							<i class="ion ion-android-add"></i> 
+							Add New Sub Admin
+						</button>
+					</div>
+					<div class="card-body">
+						<table *ngIf="dashBoardData.length != 0" id="example2" class="table table-bordered table-hover data-table dataTable dtr-inline mb-2">
+							<thead>
+								<tr>
+									<th *ngFor="let row of columnTitles">{{row.column}}</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let row of dashBoardData  | paginate: { itemsPerPage: 10, currentPage: p }; let i = index">
+									<td *ngIf="row.name">
+										<div>
+											<span *ngIf="row.name">{{row.name}}</span>
+										</div>
+									</td>
+									<td *ngIf="row.email">{{row.email}}</td>
+									<td *ngIf="row.mobile">{{row.mobile}}</td>
+									<td *ngIf="row.updatedAt">{{row.createdAt | date: 'dd/MM/yyyy'}}</td>
+									<td>
+										<button (click)="edit(row)" type="button" class="btn btn-sm rounded-0 mt-1 btn-success mx-1" data-toggle="modal" data-target="#addAdminModal">Edit</button>
+										<button (click)="deleteAdmin(row)" type="button" class="btn btn-sm rounded-0 mt-1 btn-danger mx-1" data-toggle="modal" data-target="#addAdminModal">Delete</button>
+									</td>
+									
+								</tr>
+							</tbody>
+						</table>
+						<pagination-controls *ngIf="dashBoardData.length != 0" (pageChange)="p = $event" class="float-right"></pagination-controls>
+
+						<div *ngIf="dashBoardData.length == 0">
+							<h5 class="text-center">Oops! Sub admin list is empty.</h5>
+						</div>
+					</div>
+					<div>
+						<app-admin-modal *ngIf="isModalOpen" [modalData]="modalData" (getAdmin)="getAdmin()"></app-admin-modal>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

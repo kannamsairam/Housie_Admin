@@ -1,0 +1,169 @@
+<table mat-table [dataSource]="dataSource" (toLodaData)="toLodaData()" multiTemplateDataRows class="mat-elevation-z8">
+    <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay, index as i">
+        <th mat-header-cell *matHeaderCellDef>{{tableHeader[i]}}</th>
+        <td mat-cell *matCellDef="let element"> {{element[column]}}</td>
+    </ng-container>
+
+    <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+    <ng-container matColumnDef="expandedDetail">
+        <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
+            <div class="example-element-detail" [@detailExpand]="element === expandedElement ? 'expanded' : 'collapsed'"
+                style="display: block;">
+                <div style="width: 100%;">
+                    <div class="row game-timings-main" style="background-color:#d1d1d1;">
+                        <div class="col-md-4 game-timings-sub">
+                            <mat-button-toggle-group class="set" name="fontStyle" aria-label="Font Style">
+                                <mat-button-toggle><span class="bold">Reg. Start Date :
+                                    </span>{{element.registrationStartDateTime | date:'yyyy-MM-dd'}}
+                                </mat-button-toggle>
+                                <mat-button-toggle value="italic"><span class="bold">Reg. Start time :
+                                    </span>{{element.registrationStartDateTime | date:'hh:mm'}}</mat-button-toggle>
+                            </mat-button-toggle-group>
+                        </div>
+                        <div class="col-md-4 game-timings-sub">
+                            <mat-button-toggle-group class="set" name="fontStyle" aria-label="Font Style">
+                                <mat-button-toggle><span class="bold">Reg. Close Date :
+                                    </span>{{element.registrationCloseDateTime | date:'yyyy-MM-dd'}}
+                                </mat-button-toggle>
+                                <mat-button-toggle value="italic"><span class="bold">Reg. Close time :
+                                    </span>{{element.registrationCloseDateTime | date:'hh:mm'}}</mat-button-toggle>
+                            </mat-button-toggle-group>
+                        </div>
+                        <div class="col-md-4 game-timings-sub">
+                            <mat-button-toggle-group class="set" name="fontStyle" aria-label="Font Style">
+                                <mat-button-toggle><span class="bold">Game Start Date :
+                                    </span>{{element.gameStartDateTime | date:'yyyy-MM-dd'}}</mat-button-toggle>
+                                <mat-button-toggle value="italic"><span class="bold">Game Start time :
+                                    </span>{{element.gameStartDateTime | date:'hh:mm'}}</mat-button-toggle>
+                            </mat-button-toggle-group>
+                        </div>
+                    </div>
+                    <table class="mytable">
+                        <tr class="mytr">
+                            <th class="myth"></th>
+                            <th class="myth">Number Of Winners</th>
+                            <th class="myth">Winning Amount</th>
+                        </tr>
+                        <tr>
+                            <th class="myth">Fast 5</th>
+                            <td class="mytd">{{element.jaldiWinners}}</td>
+                            <td class="mytd">{{element.jaldiPrizeAmount}}</td>
+                        </tr>
+                        <tr>
+                            <th class="myth">1st Line</th>
+                            <td class="mytd">{{element.firstLineWinners}}</td>
+                            <td class="mytd">{{element.firstLinePrizeAmount}}</td>
+                        </tr>
+                        <tr>
+                            <th class="myth">2nd Line</th>
+                            <td class="mytd">{{element.secondLineWinners}}</td>
+                            <td class="mytd">{{element.secondLinePrizeAmount}}</td>
+                        </tr>
+                        <tr>
+                            <th class="myth">3rd Line</th>
+                            <td class="mytd">{{element.thirdLineWinners}}</td>
+                            <td class="mytd">{{element.thirdLinePrizeAmount}}</td>
+                        </tr>
+                        <tr>
+                            <th class="myth">4 Corners</th>
+                            <td class="mytd">{{element.cornerWinners}}</td>
+                            <td class="mytd">{{element.cornerPrizeAmount}}</td>
+                        </tr>
+                        <tr>
+                            <th class="myth">Full Housie</th>
+                            <td class="mytd">{{element.fullHousieWinners}}</td>
+                            <td class="mytd">{{element.fullHousiePrizeAmount}}</td>
+                        </tr>
+                    </table>
+                </div><br>
+
+                <!--user table-->
+                <div class="row" *ngIf=" userDataSource.length > 0">
+                    <div class="col-sm-9 over-btn"><button mat-raised-button color="primary"
+                            (click)="onOverallView(element._id)">Overall View</button></div>
+                    <div class="col-sm-3 text-center">
+                        <mat-form-field appearance="standard">
+                            <mat-label>Filter..</mat-label> 
+                            <mat-select [formControl]="panelColor" disableRipple (selectionChange)="onChangeFilter(element,$event.value) ">
+                                <mat-option value="jldi">Fast 5</mat-option>
+                                <mat-option value="firstLine">1st Line</mat-option>
+                                <mat-option value="secondLine">2nd Line</mat-option>
+                                <mat-option value="thirdLine">3rd Line</mat-option>
+                                <mat-option value="corner">4 Corners</mat-option>
+                                <mat-option value="fullHousie">Full Housie</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="inner-table">
+                            <table mat-table [dataSource]="userDataSource" matSort>
+
+                                <ng-container matColumnDef="no">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>S.No </th>
+                                    <td mat-cell *matCellDef="let element; let i = index">{{i + 1}}</td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="Tickets">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Tickets </th>
+                                    <td mat-cell *matCellDef="let element">{{element.ticketName}}</td>
+                                </ng-container>
+                                <ng-container matColumnDef="type">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Rank</th>
+                                    <td mat-cell *matCellDef="let element;let i = index">{{element.rank}}</td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="Time">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Time</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        {{element.time }}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="Prize">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Prize</th>
+                                    <td mat-cell *matCellDef="let element">
+                                        {{element.prize}}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="action">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
+                                    <td mat-cell *matCellDef="let userElement">
+                                        <div class="form-u-btns">
+                                            <button mat-icon-button (click)="onUserView(userElement, element)"
+                                                aria-label="Example icon button with a vertical three dot icon">
+                                                <mat-icon>visibility</mat-icon>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </ng-container>
+
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-btns">
+                    <button mat-raised-button color="accent"
+                        (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">Close</button>
+
+                    <!-- tabIndex -->
+                    <ng-template [ngIf]="tabIndex=== 1">
+                        <button mat-raised-button color="warn" (click)="delete(element._id)">Delete</button>
+                        <button mat-raised-button color="primary" [disabled]="!(element.registrationStartDateTime > date)" (click)="onEditGame(element)">Edit</button>
+                        <button mat-raised-button style="background-color: black;color: white;" (click)="cancel(element._id)">Cancel</button>
+                    </ng-template>
+
+                </div>
+            </div>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+    <tr mat-row *matRowDef="let element; columns: columnsToDisplay;" class="example-element-row"
+        [class.example-expanded-row]="expandedElement === element" (click)="onChangeFilter(element)"
+        (click)="expandedElement = expandedElement === element ? null : element">
+    </tr>
+    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+</table>

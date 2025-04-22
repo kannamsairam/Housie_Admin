@@ -1,0 +1,49 @@
+<div class="modal fade" id="profileModal" tabindex="-1" role="dialog" aria-labelledby="profileModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog p-2">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="profileModalLabel">Update Profile</h4>
+				<button type="button" id="close" (click)="isModalOpen = false" class="close" data-dismiss="modal"><span
+					aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+			</div>
+			<div class="modal-body">
+				<form [formGroup]="profileFormGroup" (keydown.enter)="$event.preventDefault();">
+					<div class="form-group">
+						<div class="row">
+							<div class="col-12">
+								<label for="name">Name:</label>
+								<input type="text" autocomplete="off" id="name" class="form-control"
+									formControlName="name" />
+									<div *ngIf="formFieldValidator('name')" class="text-danger">
+										<span *ngIf="formFieldErrors('name')?.hasOwnProperty('required')">
+											Name is required
+										</span>
+										
+									</div>
+							</div>
+
+							<div class="col-12 mt-2">
+								<label for="mobile">Mobile:</label>
+								<input type="text" minlength="10" maxlength="10" autocomplete="off" id="mobile" class="form-control"
+									formControlName="mobile" />
+									<div *ngIf="formFieldValidator('mobile')" class="text-danger">
+										<span *ngIf="formFieldErrors('mobile')?.hasOwnProperty('required')">
+											Mobile is required
+										</span>
+										<span
+										*ngIf="formFieldErrors('mobile')?.hasOwnProperty('minlength') || formFieldErrors('mobile')?.hasOwnProperty('maxlength') ">
+										Should be 10 characters
+									</span>
+									</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary" (click)="editProfile()" [disabled]="profileFormGroup.invalid">Update</button>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,89 @@
+<app-loader [type]=2 *ngIf="formSubmitted"></app-loader>
+<div class="container-fluid bg-themeblue">
+	<div class="row justify-content-center">
+		<div class="col-md-6 col-12 col-sm-12 col-lg-6 my-auto">
+			<div class="row h-100">
+				<div class="col-12 my-auto">
+					<div class="card shadow px-4 mx-auto div-login">
+						<div class="card-body">
+							<div class="text-center pb-2 logo">
+								<img class="img-fluid mb-2" src="assets/img/logo.png" alt="Logo">
+							</div>
+							<form [formGroup]="login" ngNativeValidate autocomplete="off" method="">
+								<div class="form-group">
+									<div class="input-group">
+										<span class="input-group-prepend">
+											<span class="input-group-text"><i class="fas fa-user"></i></span>
+										</span>
+										<input type="text" name="email" #e1 required id="email" formControlName="email"
+											autocomplete="off" class="form-control input-sm rounded-0"
+											placeholder="Email">
+									</div>
+									<div *ngIf="formFieldValidator('email')" class="text-danger">
+										<span *ngIf="formFieldErrors('email')?.hasOwnProperty('required')">
+											Email is required
+										</span>
+										<span *ngIf="formFieldErrors('email')?.hasOwnProperty('pattern')">
+											Invalid pattern
+										</span>
+										<span *ngIf="formFieldErrors('email')?.hasOwnProperty('whitespace')">
+											Invalid pattern
+										</span>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="input-group">
+										<span class="input-group-prepend">
+											<span class="input-group-text"><i class="fas fa-lock"></i></span>
+										</span>
+										<input [type]="hide ? 'password' : 'text'" name="password" required #p2
+											formControlName="password" id="password" autocomplete="off"
+											class="form-control input-sm  rounded-0" placeholder="Password">
+
+										<button mat-icon-button matSuffix (click)="hide = !hide"
+											[attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide"
+											class="show-hide-fun">
+											<mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+										</button>
+									</div>
+									<div *ngIf="formFieldValidator('password')" class="text-danger">
+										<span *ngIf="formFieldErrors('password')?.hasOwnProperty('required')">
+											password is required
+										</span>
+										<span *ngIf="formFieldErrors('password')?.hasOwnProperty('minlength')">
+											Should be 4 characters
+										</span>
+										<span *ngIf="formFieldErrors('password')?.hasOwnProperty('maxlength')">
+											Should be less then 14 characters
+										</span>
+									</div>
+								</div>
+
+							</form>
+							<div class="p-2" style="display: flex;
+							    flex-direction: row;
+							    align-items: center;
+							    justify-content: space-between;">
+								<div>
+									<input type="checkbox"
+									 [(ngModel)]="rememberMe" [checked]="rememberMe"
+									  name="remember"
+										id="remember"/> 
+										Remember Me</div>
+								<div>
+									 <a type="button" (click)="forgetPassword()">Forgot Password</a>
+									</div>
+							</div>
+							<button type="submit" class="btn bg-theme-color btn-block rounded-0" [disabled]="login.invalid" (click)="logIn()">Log
+								In</button>
+							<!-- <span class="text-danger mt-1">{{msg}}</span> -->
+							<div *ngIf="invalidlogin" class="error text-danger">
+								<div>Incorrect email or password. </div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

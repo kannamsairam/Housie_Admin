@@ -1,0 +1,46 @@
+<section class="content h-fit-to-screen pt-2">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-12">
+				<div class="card">
+					<div class="card-header">
+						<h3 class="card-title">Send Notification</h3>
+					</div>
+
+					<div class="card-body">
+						<div class="row justify-content-center">
+							<div class="col-lg-8">
+				       	<form #filterform="ngForm" (ngSubmit)="onSubmit(filterform)"  novalidate>
+						<div class="form-group">
+							<div class="row">
+								<div class="col-12 mt-2">
+									<label for="balwallet">Title<span class="text-danger">*</span></label>
+									<input type="text" autocomplete="off" id="balwallet"  class="form-control" [value]="120" ngModel name="balwallet"  #balwallet="ngModel" required />
+									<div class="text-danger" [hidden]="balwallet.valid || balwallet.pristine">Title is required</div>
+								</div>
+								
+								<div class="col-12 mt-4">
+									<label for="bonus">Message<span class="text-danger">*</span></label>
+									<textarea id="bonus" name="bonus" class="form-control"  ngModel #bonus="ngModel" required ></textarea>
+									<div class="text-danger" [hidden]="bonus.valid || bonus.pristine">Message is required</div>
+									<!-- <input type="number" autocomplete="off" id="bonus" name="bonus" class="form-control"  ngModel #bonus="ngModel" required />
+									<div class="text-danger" [hidden]="bonus.valid || bonus.pristine">Bonus Wallet is required</div> -->
+								</div>
+								<div class="col-12 mt-4 text-right">
+									<button type="button"  class="btn btn-dark mr-3" data-dismiss="modal">Cancel</button>
+									<button type="button" class="btn btn-primary" [disabled]="!filterform.valid">Submit</button>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+</section>

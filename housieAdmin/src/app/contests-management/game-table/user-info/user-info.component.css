@@ -1,0 +1,118 @@
+.user-tickets{
+    padding-bottom: 15px;
+}
+.user-tickets table{
+    width: 100%;
+    text-align: center;
+}
+.user-tickets table tr td{
+    width: 30px;
+    height: 30px;
+}
+.num-selected{
+    background: #e7e7e8;
+}
+.user-tickets table tr td button {
+    line-height: 21px;
+    min-width: 0;
+    padding: 0 5px;
+    background: #00b50d;
+    color: #fff;
+    width: 27px;
+}
+.user-tickets h4{
+    margin: 3px;
+    font-weight: 500;
+}
+.user-winning-tickets h4{
+    font-weight: 500;
+    margin: 3px;
+}
+.num-info-sec{
+    border: 1px solid #777;
+    height: 363px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.num-info-sec h5{
+    background: #323a40;
+    color: #fff;
+    padding: 5px;
+    margin-bottom: 0;
+}
+.win-times{
+    padding: 8px;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+}
+.num-dtls{
+    padding: 6px;
+    border-radius: 20px;
+    font-weight: 500;
+    color: #fff;
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    text-align: center;
+}
+.num-won{
+    font-weight: 500;
+    background: #e7e7e8;
+}
+.num-win{
+    padding-left: 7px;
+}
+.num-time-date{
+    line-height: 30px;
+}
+.num-color-a{
+    background: #0087f4;
+}
+.num-color-b{
+    background: #ff2f19;
+}
+.num-color-c{
+    background: #ffb900;
+}
+.num-color-d{
+    background: #00aa5a;
+}
+.num-color-e{
+    background: #6610f2;
+}
+.num-connection{
+    border-left: 1px dotted;
+    height: 14px;
+    position: absolute;
+    left: 23px;
+    top: 39px;
+    z-index: 1;
+}
+.o-v table tr td{
+    height: 60px;
+    width: 60px;
+}
+.o-v table tr td button {
+    line-height: 48px;
+    width: 57px;
+}
+.o-view-info-sec{
+    height: 541px;
+}
+.o-view-info-sec .mat-expansion-panel{
+    border-radius: 0;
+}
+.o-view-info-sec .mat-expansion-panel-header{
+padding: 0;
+background: #e7e7e8;
+font-weight: 500;
+}
+.o-view-info-sec .mat-expansion-panel-header-title{
+display: block;
+margin-right: 0;
+}
+.mat-form-field + .mat-form-field {
+    margin-left: 8px;
+  }
+  

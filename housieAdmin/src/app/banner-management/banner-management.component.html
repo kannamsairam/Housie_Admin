@@ -1,0 +1,64 @@
+<section class="content h-fit-to-screen pt-2">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-12">
+				<div class="card">
+					<div class="card-header">
+						<h3 class="card-title">Banner Management</h3>
+						<button type="button" (click)="openModal()" id="addBanner"
+							class="btn btn-sm rounded-0 btn-primary mx-4" data-toggle="modal"
+							data-target="#bannerModal">
+							<i class="ion ion-android-add"></i>
+							Add New Banner
+						</button>
+					</div>
+					<div class="card-body">
+						<table *ngIf="dashBoardData.length != 0" id="example2"
+							class="table table-bordered table-hover data-table dataTable dtr-inline mb-2">
+							<thead>
+								<tr>
+									<th *ngFor="let row of columnTitles">{{row.column}}</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr
+									*ngFor="let row of dashBoardData  | paginate: { itemsPerPage: 10, currentPage: p }; let i = index">
+									<td *ngIf="row.image_name" class="img-cust-width">
+										<img class="img-fluid" src="{{row.image_name}}">
+									</td>
+									<td>
+										<span *ngIf="row.show_status">Active</span>
+										<span *ngIf="!row.show_status">Inactive</span>
+									</td>
+									<td>
+										<span *ngIf="row.BannerType == 1">Banner</span>
+										<span *ngIf="row.BannerType == 2">POP UP Banner</span>
+									</td>
+									<td *ngIf="row.updatedAt">{{row.createdAt | date: 'dd/MM/yyyy'}}</td>
+
+									<td>
+										<button (click)="edit(row)" type="button"
+											class="btn btn-sm rounded-0 mt-1 btn-success mx-1" data-toggle="modal"
+											data-target="#bannerModal">Edit</button>
+										<button (click)="delete(row._id)" type="button"
+											class="btn btn-sm rounded-0 mt-1 btn-danger mx-1" data-toggle="modal"
+											data-target="#bannerModal">Delete</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<pagination-controls *ngIf="dashBoardData.length != 0" (pageChange)="p = $event"
+							class="float-right"></pagination-controls>
+
+						<div *ngIf="dashBoardData.length == 0">
+							<h5 class="text-center">Oops! You have not added banners</h5>
+						</div>
+					</div>
+					<app-banner-modal *ngIf="isModalOpen" [modalData]="modalData"
+						(getBannerDetails)="getBannerDetails()"></app-banner-modal>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<app-loader [type]=2 *ngIf="dataLoader"></app-loader>

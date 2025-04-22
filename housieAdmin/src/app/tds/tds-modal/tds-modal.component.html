@@ -1,0 +1,51 @@
+<div class="modal fade" id="form16" tabindex="-1" role="dialog" aria-labelledby="form16Label" aria-hidden="true"
+	data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog" *ngIf="!modalData.id">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 *ngIf="!modalData._id" class="modal-title" id="form16Label">Add Form16</h4>
+				<button type="button" id="close" class="close" (click)="isModalOpen = false" data-dismiss="modal">
+					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form [formGroup]="form16DeatilsFormGroup" (keydown.enter)="$event.preventDefault();">
+					<div class="form-group">
+
+						<div class="row">
+							<div class="col-12 mt-2">
+								<label for="quater_no">Quater No:<span class="text-danger">*</span></label>
+								<select autocomplete="off" id="quater_no" class="form-control"
+									formControlName="quater_no">
+									<option value=1>1</option>
+									<option value=2>2</option>
+									<option value=3>3</option>
+									<option value=4>4</option>
+								</select>
+								<div class="text-danger"
+									*ngIf="f['quater_no'].errors && f['quater_no'].dirty || f['quater_no'].touched">
+									<p class="error" *ngIf="f['quater_no'].errors?.['required']">Quater No required</p>
+								</div>
+							</div>
+
+							<div class="col-12 mt-2">
+								<label class="btn btn-default" class="text-danger">*</label>
+								<input type="file" (change)="selectFile($event)">
+
+								<p class="text-danger">{{imgError}}</p>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" (click)="isModalOpen = false" class="btn btn-dark" data-dismiss="modal"
+					[disabled]="dataLoader">Close</button>
+				<button type="button" (click)="addForm16()" class="btn btn-primary" (click)="isModalOpen = false"
+					[disabled]="form16DeatilsFormGroup.invalid || dataLoader || !imageSrc">
+					<span *ngIf="modalData._id">Update</span>
+					<span *ngIf="!modalData._id">Add</span>
+				</button>
+			</div>
+		</div>
+	</div>

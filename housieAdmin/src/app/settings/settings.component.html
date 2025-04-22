@@ -1,0 +1,38 @@
+<div class="container-fluid bg-themeblue">
+	<div class="row justify-content-center">
+		<div class="col-md-6 col-12 col-sm-12 col-lg-6 my-auto">
+			<div class="row h-100">
+				<div class="col-12 my-auto">
+					<div class="card shadow px-4 mx-auto div-uploadFile">
+						<div class="card-body">
+							<div class="text-center pb-2 logo">
+								<i *ngIf="!isIos" class="fab fa-android fs-2"></i>
+								<i *ngIf="isIos" class="fab fa-apple fs-2"></i>
+							</div>
+							<form [formGroup]="uploadFileFormGroup" ngNativeValidate autocomplete="off" method="">
+								<div class="form-group mt-2">
+									<div class="input-group ">
+										<span class="input-group-prepend">
+											<span class="input-group-text"><i class="fas fa-file fs-2"></i></span>
+										</span>
+										<input type="file" name="file" required id="file" formControlName="file"
+											autocomplete="off" class="form-control input-sm rounded-0"
+											type="file" (change)="onFileChanged($event)"
+											placeholder="File">
+									</div>
+									<!-- <div *ngIf="submitted && uploadFileFormGroup.get('file').errors" class="text-danger">
+										<div *ngIf="uploadFileFormGroup.get('file').errors.required">
+											file is required
+										</div>
+									</div> -->
+								</div>
+								<button type="submit" class="btn bg-theme-color btn-block rounded-0"
+									(click)="uploadFile()" [disabled]="uploadFileFormGroup.invalid">Upload File</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

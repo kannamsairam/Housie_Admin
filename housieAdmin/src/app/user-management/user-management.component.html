@@ -1,0 +1,614 @@
+<app-loader [type]=2 *ngIf="dataLoader"></app-loader>
+<div class="d-flex justify-content-between p-2">
+	<h3 class="card-title">User Management</h3>
+	<div *ngIf="viewCustomer">
+		<a class="text-color-primary br-pointer" (click)="navigateTo('back')">User Management</a>
+		<span> &#47;
+			<a (click)="navigateTo('user')">View User</a>
+		</span>
+	</div>
+</div>
+<section class="content h-fit-to-screen" *ngIf="!viewCustomer">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-12">
+				<div class="card">
+					<div class="card-body">
+						<div class="row">
+							<div class="col-sm-9"></div>
+							<form [formGroup]="filterForm" novalidate>
+								<div class="form-group">
+									<div class="row">
+										<div class="col-3 d-picker">
+											<mat-form-field>
+												<mat-label>From (mm-dd-yyyy)</mat-label>
+												<input matInput [matDatepicker]="picker" formControlName="fromDate">
+												<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+												<mat-datepicker #picker></mat-datepicker>
+											</mat-form-field>
+
+										</div>
+										<div class="col-3 d-picker" style="margin-left: 40px;">
+											<mat-form-field>
+												<mat-label>To (mm-dd-yyyy)</mat-label>
+												<input matInput [matDatepicker]="picker1" formControlName="toDate">
+												<!-- <mat-hint>MM/DD/YYYY</mat-hint> -->
+												<mat-datepicker-toggle matSuffix [for]="picker1">
+												</mat-datepicker-toggle>
+												<mat-datepicker #picker1></mat-datepicker>
+											</mat-form-field>
+										</div>
+										<div class="t-btns">
+											<button type="submit" (click)="onSubmit()"
+												class="btn btn-primary mt-4 ml-5">Submit</button>
+											<button type="submit" (click)="onReset()"
+												class="btn btn-primary mt-4 ml-3">Reset</button>
+										</div>
+									</div>
+								</div>
+							</form>
+							<div class="col-sm-3 text-center">
+								<mat-form-field appearance="standard">
+									<mat-label>Search..</mat-label>
+									<input class="search" matInput (keyup)="applyFilter($event)" placeholder="Search.."
+										#input>
+								</mat-form-field>
+
+							</div>
+
+							<div class="col-sm-12">
+
+
+								<div class="mat-elevation-z8">
+									<table mat-table [dataSource]="dataSource" matSort>
+
+										<ng-container matColumnDef="no">
+											<th mat-header-cell *matHeaderCellDef mat-sort-header>S.No </th>
+											<td mat-cell *matCellDef="let element; let i = index">{{i + 1}}</td>
+										</ng-container>
+
+										<ng-container matColumnDef="username">
+											<th mat-header-cell *matHeaderCellDef mat-sort-header>User Name</th>
+											<td mat-cell *matCellDef="let element">{{element.username}}</td>
+										</ng-container>
+
+
+										<ng-container matColumnDef="email">
+											<th mat-header-cell *matHeaderCellDef mat-sort-header>Email Id</th>
+											<td mat-cell *matCellDef="let element">
+												{{element.email}}
+											</td>
+										</ng-container>
+
+										<ng-container matColumnDef="mobile">
+											<th mat-header-cell *matHeaderCellDef mat-sort-header> Mobile No </th>
+											<td mat-cell *matCellDef="let element">
+												{{element.mobile}}
+											</td>
+										</ng-container>
+										<ng-container matColumnDef="status">
+											<th mat-header-cell *matHeaderCellDef mat-sort-header>Verified</th>
+											<td mat-cell *matCellDef="let element">
+												<span *ngIf="element.status">Yes</span>
+												<span *ngIf="!element.status">No</span>
+											</td>
+										</ng-container>
+										<ng-container matColumnDef="bank">
+											<th mat-header-cell *matHeaderCellDef mat-sort-header>Bank Details</th>
+											<td mat-cell *matCellDef="let element">
+												<span *ngIf="element.bank">
+													<span *ngIf="element.bank.status == ''" id="notUploaded">Not
+														Updated</span>
+													<span *ngIf="element.bank.status == 'accepted'"
+														id="accepted">Accepted</span>
+													<span *ngIf="element.bank.status == 'rejected'"
+														id="rejected">Rejected</span>
+													<span *ngIf="element.bank.status == 'pending'"
+														id="pending">Pending</span>
+												</span>
+											</td>
+										</ng-container>
+										<ng-container matColumnDef="pan">
+											<th mat-header-cell *matHeaderCellDef mat-sort-header>KYC Details</th>
+											<td mat-cell *matCellDef="let element">
+												<ng-container *ngIf="element.kyc && element.kyc.pancard && element.kyc.aadhar">
+													<ng-container *ngIf="element.kyc.pancard.status && element.kyc.aadhar.status">
+														<span *ngIf="element.kyc.pancard.status === 'accepted' && element.kyc.aadhar.status === 'accepted'" id="accepted">Accepted</span>
+														<span *ngIf="element.kyc.pancard.status === 'rejected' || element.kyc.aadhar.status === 'rejected'" id="rejected">Rejected</span>
+														<span *ngIf="element.kyc.pancard.status === 'pending' || element.kyc.aadhar.status === 'pending'" id="pending">Pending</span>
+													</ng-container>
+												</ng-container>
+												<span *ngIf="!element.kyc || !element.kyc.pancard || !element.kyc.aadhar || element.kyc.pancard.status === '' || element.kyc.aadhar.status =='' " id="notUploaded">Not uploaded</span>
+											</td>			
+										</ng-container>
+										<ng-container matColumnDef="kycDate">
+											<th mat-header-cell *matHeaderCellDef mat-sort-header>KYC Date</th>
+											<td mat-cell *matCellDef="let element">
+												{{element.kyc.pancard.time | date: 'dd/MM/yyyy'}}
+											</td>
+										</ng-container>
+										<ng-container matColumnDef="action">
+											<th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
+											<td mat-cell *matCellDef="let element">
+												<button (click)="view(element._id)" type="button"
+													class="btn btn-sm rounded-0 mt-1 btn-info mx-1">View</button>
+												<button *ngIf="!element.status"
+													(click)="actionButton(element._id, 'verify')" type="button"
+													class="btn btn-sm rounded-0 mt-1 btn-warning mx-1"
+													data-toggle="modal" data-target="#userModal">Verify</button>
+												<button *ngIf="element.isBlocked"
+													(click)="actionButton(element._id, 'unblock' )" type="button"
+													class="btn btn-sm rounded-0 mt-1 btn-danger mx-1"
+													data-toggle="modal" data-target="#userModal">Unblock</button>
+												<button *ngIf="!element.isBlocked"
+													(click)="actionButton( element._id, 'block')" type="button"
+													class="btn btn-sm rounded-0 mt-1 btn-danger mx-1"
+													data-toggle="modal" data-target="#userModal">Block</button>
+												<button type="button" (click)="actionButton(element._id, 'delete')"
+													class="btn btn-sm rounded-0 mt-1 btn-danger mx-1"
+													data-toggle="modal" data-target="#userModal">Delete</button>
+											</td>
+										</ng-container>
+
+										<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+										<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+									</table>
+
+									<mat-paginator [pageSizeOptions]="[50, 100]" showFirstLastButtons
+										aria-label="Select page of periodic elements">
+									</mat-paginator>
+
+								</div>
+							</div>
+						</div>
+						<!-- <div *ngIf="dashBoardData.length == 0">
+							<h5 class="text-center">Oops! No one registered yet.</h5>
+						</div> -->
+						<app-user-modal *ngIf="isModalOpen" [modalData]="modalData" (getUsers)="getUsers()">
+						</app-user-modal>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section *ngIf="viewCustomer" class="mx-2">
+	<div class="card card-primary card-outline card-outline-tabs">
+		<div class="card-header p-0 border-bottom-0">
+			<ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+				<li class="nav-item">
+					<a class="nav-link active" id="custom-tabs-one-basic-info-tab" data-toggle="pill"
+						href="#custom-tabs-one-basic-info" role="tab" aria-controls="custom-tabs-one-basic-info"
+						aria-selected="true">User Profile</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" id="custom-tabs-one-bank-details-tab" data-toggle="pill"
+						href="#custom-tabs-one-bank-details" role="tab" aria-controls="custom-tabs-one-bank-details"
+						aria-selected="false">Bank Details</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" id="custom-tabs-one-kyc-tab" data-toggle="pill" href="#kyc" role="tab"
+						aria-controls="kyc" aria-selected="false" (click)="openTab('kyc')">KYC</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" id="participated-games-tab" data-toggle="pill" href="#participated-games"
+						role="tab" aria-controls="participated-games" aria-selected="false"
+						(click)="openTab('participatedGames')">Participated Games</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" id="withdrawn-request-tab" data-toggle="pill" href="#withdrawn-request"
+						role="tab" aria-controls="withdrawn-request" aria-selected="false"
+						(click)="openTab('withDrawnData')">Withdrawn Request</a>
+				</li>
+			</ul>
+		</div>
+
+		<div class="card-body">
+			<div class="tab-content" id="custom-tabs-one-tabContent">
+				<div class="tab-pane fade active show" id="custom-tabs-one-basic-info" role="tabpanel"
+					aria-labelledby="custom-tabs-one-basic-info-tab">
+					<div class="row">
+						<div class="col-2 col2">
+							<!-- <img class="img-fluid" *ngIf="usereProfile" src="{{ 'http://3.6.207.236:3002/profile/' + usereProfile + '.jpg'}}" alt="profile image"/> -->
+							<div class="user_pro" *ngIf="usereProfile">
+								<img class="img-fluid" src="{{usereProfile}}" alt="profile image"
+									style="height: -webkit-fill-available; width: auto;" />
+							</div>
+							<div *ngIf="!usereProfile" class="profile-img text-center user_pro">
+								<i class="fa fa-user fs-2"></i>
+							</div>
+							<a mat-icon-button class="d-icn" *ngIf="usereProfile != ''" [href]="usereProfile"
+								(click)="onDownloadImage(usereProfile)"><i class="fa fa-download curr_point"
+									aria-hidden="true"></i></a>
+
+						</div>
+						<div>
+							<div class="row">
+								<div class="col-sm">
+									<label>User Name</label> <br>
+									<input type="text" value="{{userDetailsData.username}}" disabled>
+								</div>
+								<div class="col-sm">
+									<label>Mobile No</label> <br>
+									<input type="text" value="{{userDetailsData.mobile}}" disabled>
+
+
+									<div *ngIf="userDetailsData.is_mobile_verified === true">
+										<span class="text-success">Verified </span>
+									</div>
+									<div *ngIf="userDetailsData.is_mobile_verified === false">
+										<span class="text-danger">Non Verified </span>
+									</div>
+
+
+								</div>
+								<div class="col-sm">
+									<label>Address</label> <br>
+									<input type="text" value="{{userDetailsData.address}}" disabled>
+
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm">
+									<label>Full Name</label> <br>
+									<input type="text" value="{{userDetailsData.name}}" disabled>
+								</div>
+								<div class="col-sm">
+									<label>Date of Birth</label> <br>
+									<input type="text" value="{{userDetailsData.dob}}" disabled>
+								</div>
+								<div class="col-sm">
+									<label>State</label> <br>
+									<input type="text" value="{{userDetailsData.state}}" disabled>
+
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm">
+									<label>Email</label> <br>
+									<input type="text" value="{{userDetailsData.email}}" disabled>
+									<div *ngIf="userDetailsData.is_email_verified === true">
+										<span class="text-success">Verified </span>
+									</div>
+									<!-- <div *ngIf="userDetailsData.is_email_verified === false">
+										<span class="text-danger">Non Verified </span>
+									</div> -->
+								</div>
+								<div class="col-sm">
+									<label>Gender</label> <br>
+									<input type="text" value="{{userDetailsData.gender}}" disabled>
+								</div>
+								<div class="col-sm">
+									<label>Country</label> <br>
+									<input type="text" value="{{userDetailsData.country}}" disabled>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="tab-pane fade" id="custom-tabs-one-bank-details" role="tabpanel"
+					aria-labelledby="custom-tabs-one-bank-details-tab">
+					<div class="row">
+						<div class="col-4">
+							<label>Bank Name</label>
+						</div>
+						<div class="col-8 border p-2">
+							<span *ngIf="userDetailsData.bank?.bank_name">{{userDetailsData.bank.bank_name}}</span>
+						</div>
+					</div>
+					<div class="row mt-2">
+						<div class="col-4">
+							<label>Holder Name</label>
+						</div>
+						<div class="col-8 border p-2">
+							<span *ngIf="userDetailsData.bank">{{userDetailsData.bank.account_holder}}</span>
+						</div>
+					</div>
+					<div class="row mt-2">
+						<div class="col-4">
+							<label>Account Number</label>
+						</div>
+						<div class="col-8 border p-2">
+							<span *ngIf="userDetailsData.bank">{{userDetailsData.bank.account_number}}</span>
+						</div>
+					</div>
+					<div class="row mt-2">
+						<div class="col-4">
+							<label>IFSC Code</label>
+						</div>
+						<div class="col-8 border p-2">
+							<span *ngIf="userDetailsData.bank">{{userDetailsData.bank.ifsc_code}}</span>
+						</div>
+					</div>
+					<div class="row mt-2">
+						<div class="col-4">
+							<label>Branch Name</label>
+						</div>
+						<div class="col-8 border p-2">
+							<span *ngIf="userDetailsData.bank">{{userDetailsData?.bank?.branch_name}}</span>
+						</div>
+					</div>
+					<div class="row mt-4">
+						<div class="col-6"></div>
+						<div class="col-6">
+							<div class="d-flex justify-content-between">
+								<span class="mx-4">
+									<span class="mx-4">
+										<button type="button" class="btn btn-primary"
+											(click)="updateBank('bank', 'true')"
+											*ngIf="userDetailsData.bank.status == 'pending' || userDetailsData.bank.status == ''"
+											[disabled]='userDetailsData.bank.status == ""'>Accept</button>
+										&nbsp;&nbsp;
+										<button type="button" class="btn btn-primary"
+											(click)="updateBank('bank', 'false')"
+											*ngIf="userDetailsData.bank.status == 'pending' || userDetailsData.bank.status == ''"
+											[disabled]='userDetailsData.bank.status == ""'>Reject</button>
+
+										<span *ngIf="userDetailsData.bank.status == 'accepted' ">
+											<span class="text-success">Accepted</span>
+										</span>
+										<span *ngIf="userDetailsData.bank.status == 'rejected'">
+											<span class="text-danger">Rejected</span>
+										</span>
+										<!-- <span *ngIf="userDetailsData.kyc.pancard.status != '' && userDetailsData.kyc.pancard.image_name"  class="text-success mx-2">Accepted</span> -->
+										<!-- <span *ngIf="userDetailsData.kyc.pancard.status == '' && !userDetailsData.kyc.pancard.image_name"  class="text-danger mx-2">Rejected</span> -->
+									</span>
+								</span>
+
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="tab-pane fade" id="kyc" role="tabpanel" aria-labelledby="custom-tabs-one-kyc-tab">
+					<!-- <div class="row">
+						<div class="col-6">
+							<label>Aadhar Card</label>
+							<span>{{userDetailsData.kyc.aadhar.image_name}}</span>
+							<div class="d-flex justify-content-between border p-2">
+								<span *ngIf="userDetailsData.kyc.aadhar.image_name">{{userDetailsData.kyc.aadhar.image_name}}</span>
+								<span class="mx-4">
+									<a *ngIf="userDetailsData.kyc.aadhar.image_name != ''"  [href]="host + '/documents/' + userDetailsData.kyc.aadhar.image_name + '.jpg'" target="_blank" ><i class="fa fa-eye" aria-hidden="true"></i></a>
+									
+									<a type="button" (click)="updateKYC('aadhar', 'accept')" *ngIf="userDetailsData.kyc.aadhar.image_name != '' && !userDetailsData.kyc.aadhar.status"><i class="fa fa-check mx-4" aria-hidden="true"></i></a>
+									<a type="button" (click)="updateKYC('aadhar', 'accept')" *ngIf="userDetailsData.kyc.aadhar.image_name != '' && !userDetailsData.kyc.aadhar.status"><i class="fa fa-times" aria-hidden="true"></i></a>
+
+									<span *ngIf="userDetailsData.kyc.aadhar.image_name != '' && userDetailsData.kyc.aadhar.status" class="text-success mx-2">Accepted</span>
+									<span *ngIf="userDetailsData.kyc.aadhar.image_name != '' && !userDetailsData.kyc.aadhar.status"  class="text-danger mx-2">Rejected</span>
+
+									<span *ngIf="!userDetailsData.kyc.aadhar">
+										Image is not uploaded.
+									</span>
+								</span>
+							</div>
+						</div>
+					</div> -->
+
+
+					<div class="row mt-4">
+						<div class="col-6">
+							<label>Pancard</label>
+							<div class="d-flex justify-content-between border p-2">
+								<span>{{ showImgName(userDetailsData.kyc?.pancard?.image_name)}}</span>
+								<span class="mx-4">
+									<span class="mx-4">
+
+										<a *ngIf="userDetailsData.kyc.pancard.image_name != ''"
+											[href]="userDetailsData.kyc.pancard.image_name"><i
+												class="fa fa-download curr_point" aria-hidden="true"></i></a>
+										&nbsp;&nbsp;
+
+
+										<i type="button" class="btn btn-primary" data-toggle="modal"
+											data-target=".bd-example-modal-lg" class="fa fa-eye curr_point"
+											aria-hidden="true"></i>
+
+										<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
+											aria-labelledby="myLargeModalLabel" aria-hidden="true">
+											<div class="modal-dialog modal-lg">
+												<div class="modal-content">
+													<div class="modal-header">
+														<h5 class="modal-title" id="exampleModalLabel">View</h5>
+														<button type="button" class="close" data-dismiss="modal"
+															aria-label="Close">
+															<span aria-hidden="true">&times;</span>
+														</button>
+													</div>
+													<div class="modal-body">
+														<div class="img_pan" style="width: auto; height: 500px; ">
+															<img *ngIf="userDetailsData.kyc.pancard.image_name != '';else other_content"
+																src="{{userDetailsData.kyc.pancard.image_name}}"
+																alt="pan card image"
+																style="height: -webkit-fill-available; width: auto;">
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										&nbsp;&nbsp;
+										<a type="button" (click)="updateKYC('pancard', 'true')"
+											*ngIf="userDetailsData.kyc.pancard.image_name != '' && userDetailsData.kyc.pancard.status === 'pending'"><i
+												class="fa fa-check mx-4 curr_point" aria-hidden="true"></i></a>
+										&nbsp;&nbsp;
+										<a type="button" (click)="updateKYC('pancard', 'false')"
+											*ngIf="userDetailsData.kyc.pancard.image_name != '' && userDetailsData.kyc.pancard.status=== 'pending'"><i
+												class="fa fa-times curr_point" aria-hidden="true"></i></a>
+
+
+										&nbsp;&nbsp;
+										<span *ngIf="userDetailsData.kyc.pancard.status == 'accepted' ">
+											<span class="text-success">Accepted</span>
+										</span>
+										<span *ngIf="userDetailsData.kyc.pancard.status == 'rejected'">
+											<span class="text-danger">Rejected</span>
+										</span>
+
+
+										<!-- <span *ngIf="userDetailsData.kyc.pancard.status != '' && userDetailsData.kyc.pancard.image_name"  class="text-success mx-2">Accepted</span> -->
+										<!-- <span *ngIf="userDetailsData.kyc.pancard.status == '' && !userDetailsData.kyc.pancard.image_name"  class="text-danger mx-2">Rejected</span> -->
+									</span>
+									<span *ngIf="!userDetailsData.kyc.pancard">
+										Image is not uploaded.
+									</span>
+								</span>
+
+							</div>
+						</div>
+						<div class="col-lg-6"></div>
+						<div class="col-lg-6 mt-2">
+							<div class="img_pan" style="width: auto; height: 250px;    overflow: hidden; ">
+								<img *ngIf="userDetailsData.kyc.pancard.image_name != '';else other_content"
+									src="{{userDetailsData.kyc.pancard.image_name}}" alt="pan card image"
+									style="height: -webkit-fill-available; width: auto;">
+								<ng-template #other_content>No image uploaded</ng-template>
+							</div>
+						</div>
+					</div>
+					<div class="row mt-4">
+						<div class="col-6">
+							<label>Aadhar card</label>
+							<div class="d-flex justify-content-between border p-2">
+								<span>{{ showImgName(userDetailsData.kyc?.aadhar?.image_name)}}</span>
+								<span class="mx-4">
+									<span class="mx-4">
+
+										<a *ngIf="userDetailsData.kyc.aadhar.image_name != ''"
+											[href]="userDetailsData.kyc.aadhar.image_name"><i
+												class="fa fa-download curr_point" aria-hidden="true"></i></a>
+										&nbsp;&nbsp;
+
+
+										<i type="button" class="btn btn-primary" data-toggle="modal"
+											data-target=".bd-example-modal-lg" class="fa fa-eye curr_point"
+											aria-hidden="true"></i>
+
+										<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
+											aria-labelledby="myLargeModalLabel" aria-hidden="true">
+											<div class="modal-dialog modal-lg">
+												<div class="modal-content">
+													<div class="modal-header">
+														<h5 class="modal-title" id="exampleModalLabel">View</h5>
+														<button type="button" class="close" data-dismiss="modal"
+															aria-label="Close">
+															<span aria-hidden="true">&times;</span>
+														</button>
+													</div>
+													<div class="modal-body">
+														<div class="img_pan" style="width: auto; height: 500px; ">
+															<img *ngIf="userDetailsData.kyc.aadhar.image_name != '';else other_content"
+																src="{{userDetailsData.kyc.aadhar.image_name}}"
+																alt="aadhar card image"
+																style="height: -webkit-fill-available; width: auto;">
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										&nbsp;&nbsp;
+										<a type="button" (click)="updateKYC('aadhar', 'true')"
+											*ngIf="userDetailsData.kyc.aadhar.image_name != '' && userDetailsData.kyc.aadhar.status === 'pending'"><i
+												class="fa fa-check mx-4 curr_point" aria-hidden="true"></i></a>
+										&nbsp;&nbsp;
+										<a type="button" (click)="updateKYC('aadhar', 'false')"
+											*ngIf="userDetailsData.kyc.aadhar.image_name != '' && userDetailsData.kyc.aadhar.status=== 'pending'"><i
+												class="fa fa-times curr_point" aria-hidden="true"></i></a>
+
+
+										&nbsp;&nbsp;
+										<span *ngIf="userDetailsData.kyc.aadhar.status == 'accepted' ">
+											<span class="text-success">Accepted</span>
+										</span>
+										<span *ngIf="userDetailsData.kyc.aadhar.status == 'rejected'">
+											<span class="text-danger">Rejected</span>
+										</span>
+
+
+										<!-- <span *ngIf="userDetailsData.kyc.aadhar.status != '' && userDetailsData.kyc.aadhar.image_name"  class="text-success mx-2">Accepted</span> -->
+										<!-- <span *ngIf="userDetailsData.kyc.aadhar.status == '' && !userDetailsData.kyc.aadhar.image_name"  class="text-danger mx-2">Rejected</span> -->
+									</span>
+									<span *ngIf="!userDetailsData.kyc.aadhar">
+										Image is not uploaded.
+									</span>
+								</span>
+
+							</div>
+						</div>
+						<div class="col-lg-6"></div>
+						<div class="col-lg-6 mt-2">
+							<div class="img_pan" style="width: auto; height: 250px;    overflow: hidden; ">
+								<img *ngIf="userDetailsData.kyc.aadhar.image_name != '';else other_content"
+									src="{{userDetailsData.kyc.aadhar.image_name}}" alt="pan card image"
+									style="height: -webkit-fill-available; width: auto;">
+								<ng-template #other_content>No image uploaded</ng-template>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="tab-pane fade" id="participated-games" role="tabpanel"
+					aria-labelledby="participated-games-tab">
+
+					<table id="example2" *ngIf="participatedGames.length != 0"
+						class="table table-bordered table-hover data-table dataTable dtr-inline mb-2">
+						<thead>
+							<tr>
+								<th *ngFor="let row of participatedGameColum">{{row.column}}</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr
+								*ngFor="let row of participatedGames  | paginate: { itemsPerPage: 10, currentPage: p }; let i = index">
+								<td>{{i + 1}}</td>
+								<td>{{row.gameName}}</td>
+								<td>{{row.totalTickets}}</td>
+								<td>{{row.totalWinnings}}</td>
+								<td>{{row.fees}}</td>
+								<td class="text-success">
+									{{row.status | titlecase}}
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<pagination-controls *ngIf="participatedGames.length != 0" (pageChange)="p = $event"
+						class="float-right"></pagination-controls>
+
+					<div *ngIf="participatedGames.length == 0">
+						<h5 class="text-center">Oops! no data found.</h5>
+					</div>
+				</div>
+
+				<div class="tab-pane fade" id="withdrawn-request" role="tabpanel"
+					aria-labelledby="withdrawn-request-tab">
+
+					<table id="example2" *ngIf="withDrawnData.length != 0"
+						class="table table-bordered table-hover data-table dataTable dtr-inline mb-2">
+						<thead>
+							<tr>
+								<th *ngFor="let row of columnTitles">{{row.column}}</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr
+								*ngFor="let row of withDrawnData  | paginate: { itemsPerPage: 10, currentPage: p }; let i = index">
+								<td>{{i + 1}}</td>
+								<!-- <td>{{row.fee}}</td> -->
+								<td>{{row.amount |  number:'1.0-0'}}</td>
+								<td>{{row.balance |  number:'1.0-0'}}</td>
+								<td>{{row.createdAt | date: 'dd/MM/yyyy'}}</td>
+								<td class="text-success">
+									{{row.status | titlecase}}
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<pagination-controls *ngIf="withDrawnData.length != 0" (pageChange)="p = $event"
+						class="float-right"></pagination-controls>
+
+					<div *ngIf="withDrawnData.length == 0">
+						<h5 class="text-center">Oops! no data found.</h5>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

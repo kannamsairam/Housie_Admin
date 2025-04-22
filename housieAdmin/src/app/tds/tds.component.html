@@ -1,0 +1,187 @@
+<app-loader [type]=2 *ngIf="dataLoader"></app-loader>
+<div class="d-flex justify-content-between p-2">
+	<h3 class="card-title">TDS</h3>
+	<!-- <div *ngIf="viewCustomer">
+		<a class="text-color-primary br-pointer" (click)="navigateTo('back')">TDS</a>
+		<span> &#47;
+			<a (click)="navigateTo('user')">View User</a>
+		</span>
+	</div> -->
+</div>
+<section class="content h-fit-to-screen">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-12">
+				<div class="card">
+					<div class="card-body">
+						<div class="row">
+							<div class="col-sm-9">
+								<button mat-raised-button (click)="exportToExcel()">Export Excel Data</button>
+								<!-- Your MatTable here... -->
+							</div>
+							<div class="row">
+								<div class="col-lg-12">
+									<form [formGroup]="filterForm" novalidate>
+										<div class="form-group">
+											<div class="row">
+												<div class="col-3 d-picker">
+													<!-- <div class="input-container">
+														<label for="balwallet">From Date<span
+																class="text-danger">*</span></label>
+														<i class="fa fa-calendar icon"></i>
+														<input type="text" autocomplete="off" id="fromDate" class="form-control"
+															bsDatepicker formControlName="fromDate"
+															[bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+															placeholder="DD/MM/YYYY" required />
+													</div> -->
+		
+		
+													<mat-form-field>
+														<mat-label>From (mm-dd-yyyy)</mat-label>
+														<input matInput [matDatepicker]="picker"  formControlName="fromDate">
+														<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+														<mat-datepicker #picker></mat-datepicker>
+													</mat-form-field>
+		
+												</div>
+												<div class="col-3 d-picker" style="margin-left: 40px;">
+													<!-- <div class="input-container">
+														<label for="balwallet">To Date<span class="text-danger">*</span></label>
+														<i class="fa fa-calendar icon"></i>
+														<input type="text" autocomplete="off" id="toDate" class="form-control"
+															bsDatepicker formControlName="toDate"
+															[bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }"
+															placeholder="DD/MM/YYYY" required />
+													</div> -->
+													<mat-form-field>
+														<mat-label>To (mm-dd-yyyy)</mat-label>
+														<input matInput [matDatepicker]="picker1" formControlName="toDate">
+														<!-- <mat-hint>MM/DD/YYYY</mat-hint> -->
+														<mat-datepicker-toggle matSuffix [for]="picker1">
+														</mat-datepicker-toggle>
+														<mat-datepicker #picker1></mat-datepicker>
+													</mat-form-field>
+												</div>
+												<div class="t-btns">
+													<button type="submit" (click)="onSubmit()"
+														class="btn btn-primary mt-4 ml-5"  >Submit</button>
+													<button type="submit" (click)="onReset()"
+														class="btn btn-primary mt-4 ml-3" >Reset</button>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+		
+							<div class="col-sm-3 text-center ">
+								<mat-form-field appearance="standard" class="search">
+									<mat-label>Search..</mat-label>
+									<input class="search" matInput (keyup)="applyFilter($event)" placeholder="Search.." #input>
+								</mat-form-field>
+							</div>
+
+							<div class="col-sm-12">
+
+
+								<div class="mat-elevation-z8">
+									<table mat-table [dataSource]="dataSource" matSort>
+
+										<ng-container matColumnDef="no">
+											<th mat-header-cell *matHeaderCellDef mat-sort-header>S.No </th>
+											<td mat-cell *matCellDef="let element; let i = index">{{i + 1}}</td>
+										</ng-container>
+
+										<ng-container matColumnDef="username">
+											<th mat-header-cell *matHeaderCellDef mat-sort-header>User Name</th>
+											<td mat-cell *matCellDef="let element">{{element.username}}</td>
+										</ng-container>
+
+
+										<ng-container matColumnDef="email">
+											<th mat-header-cell *matHeaderCellDef mat-sort-header>Email Id</th>
+											<td mat-cell *matCellDef="let element">
+												{{element.email}}
+											</td>
+										</ng-container>
+
+										<ng-container matColumnDef="mobile">
+											<th mat-header-cell *matHeaderCellDef mat-sort-header> Mobile No </th>
+											<td mat-cell *matCellDef="let element">
+												{{element.mobile}}
+											</td>
+										</ng-container>
+
+										<ng-container matColumnDef="type">
+											<th mat-header-cell *matHeaderCellDef mat-sort-header> Type </th>
+											<td mat-cell *matCellDef="let element">
+												<span *ngIf="element.type == 'withdraw'" id="withdraw">withdraw</span>
+												<span *ngIf="element.type == 'deposit'" id="deposit">deposit</span>
+											</td>
+										</ng-container>
+
+										<ng-container matColumnDef="amount">
+											<th mat-header-cell *matHeaderCellDef mat-sort-header> Amount </th>
+											<td mat-cell *matCellDef="let element">
+												{{element.amount | number:'1.0-0'}}
+											</td>
+										</ng-container>
+
+										<ng-container matColumnDef="aftertdsamount">
+											<th mat-header-cell *matHeaderCellDef mat-sort-header> After Tds Amount
+											</th>
+											<td mat-cell *matCellDef="let element">
+												{{element.AfterTdsAmount | number:'1.0-0'}}
+											</td>
+										</ng-container>
+
+										<ng-container matColumnDef="Date">
+											<th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+											<td mat-cell *matCellDef="let element">
+												{{element.createdAt | date: 'dd/MM/yyyy'}}
+											</td>
+										</ng-container>
+										<ng-container matColumnDef="action">
+											<th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
+											<td mat-cell *matCellDef="let element" class="actionCheck">
+												<button type="button" (click)="openModal(element.user_id)"
+													id="addBanner" class="btn btn-sm rounded-0 btn-primary mx-4"
+													data-toggle="modal" data-target="#form16">
+													Upload Form16
+												</button>
+												<button type="button" (click)="openModal(element.user_id)"
+													id="addBanner" class="btn btn-sm rounded-0 btn-success mx-4"
+													data-toggle="modal" data-target="#tdsViewModal">
+													view
+												</button>
+											</td>
+
+										</ng-container>
+
+
+										<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+										<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+									</table>
+
+									<mat-paginator [pageSizeOptions]="[50, 100]" showFirstLastButtons
+										aria-label="Select page of periodic elements">
+									</mat-paginator>
+
+								</div>
+							</div>
+						</div>
+						<div *ngIf="dashBoardData.length == 0">
+							<!-- <h5 class="text-center">Oops! No one registered yet.</h5> -->
+						</div>
+						<app-user-modal *ngIf="isModalOpen" [modalData]="modalData" (tdsDetails)="tdsDetails()">
+						</app-user-modal>
+						<app-tds-modal *ngIf="isModalOpen" [modalData]="modalData"
+							(getBannerDetails)="getBannerDetails()" [userId]="selectedUserId"></app-tds-modal>
+						<app-tds-view-modal *ngIf="isModalOpen" [modalData]="modalData"
+							[pdfList]="pdfListData"></app-tds-view-modal>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

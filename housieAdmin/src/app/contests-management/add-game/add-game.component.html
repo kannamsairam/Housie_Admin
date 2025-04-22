@@ -1,0 +1,862 @@
+<section class="content h-fit-to-screen py-2 px-3">
+	<div class="container-fluid">
+		<div class="text-right">
+			<a class="text-color-primary" style="cursor: pointer;" (click)="navigateTo()">Contest Management</a>
+			<span> &#47;
+				<a>Add New Question</a>
+			</span>
+		</div>
+
+		<div class="card card-primary mt-2">
+			<div class="card-header">
+				<h3 class="card-title">{{id ? 'Update Game' :'Add New Game'}}</h3>
+			</div>
+			<div class="card-body">
+				<div class="custom-control custom-switch">
+					<input type="checkbox" class="custom-control-input" id="switch1" name="example" [(ngModel)]="toggleValidation" [disabled]="isDisable" (change)="onToggleChange()">
+					<label class="custom-control-label" for="switch1">Free game</label>
+				  </div>
+				<form [formGroup]="addGameFormGroup" (keydown.enter)="$event.preventDefault();">
+					<div class="form-group">
+						<div class="row">
+							<div class="col col-lg-3 mt-4">
+								<label for="name">Game/Tournament Name<span class="text-danger">*</span></label>
+								<input type="text" autocomplete="off" id="name" class="form-control"
+									formControlName="name" required />
+								<div class="text-danger"
+									*ngIf="f['name'].errors && f['name'].dirty || f['name'].touched">
+									<p class="error" *ngIf="f['name'].errors?.['required']">Name is required</p>
+								</div>
+							</div>
+
+
+
+							<div class="col col-lg-3 mt-4">
+								<label for="fees">Fees<span class="text-danger">*</span></label>
+								<input type="text" min='1' min='1' autocomplete="off" id="fees" class="form-control"
+									formControlName="fees" OnlyNumber="true" (keyup)="ammountChange($event)" required />
+								<div class="text-danger"
+									*ngIf="f['fees'].errors && f['fees'].dirty || f['fees'].touched">
+									<p class="error" *ngIf="f['fees'].errors?.['required']">Fees is required</p>
+									<p class="error" *ngIf="f['fees'].errors?.['pattern'] || f['fees'].errors?.['min']">Please enter positive
+										integers only.</p>
+								</div>
+							</div>
+
+							<div class="col col-lg-3 mt-4">
+								<label for="totalTickets">Total Tickets<span class="text-danger">*</span></label>
+								<input type="text" min='1' autocomplete="off" id="totalTickets" class="form-control"
+									formControlName="totalTickets" OnlyNumber="true" (keyup)="ammountChange($event)"
+									required />
+								<div class="text-danger"
+									*ngIf="f['totalTickets'].errors && f['totalTickets'].dirty || f['totalTickets'].touched">
+									<p class="error" *ngIf="f['totalTickets'].errors?.['required']">Total Tickets is
+										required</p>
+									<p class="error" *ngIf="f['totalTickets'].errors?.['pattern'] || f['totalTickets'].errors?.['min']">Please enter positive
+										integers only.</p>
+								</div>
+							</div>
+							<div class="col col-lg-3 mt-4">
+								<label for="totalWinnings">Total Winning Amount<span
+										class="text-danger">*</span></label>
+								<input type="text" min='1' autocomplete="off" id="totalWinnings" class="form-control"
+									formControlName="totalWinnings" OnlyNumber="true" required [readOnly]="isTotalWinnings"/>
+								<div class="text-danger"
+									*ngIf="f['totalWinnings'].errors && f['totalWinnings'].dirty || f['totalWinnings'].touched">
+									<p class="error" *ngIf="f['totalWinnings'].errors?.['required']">Total Winnings is
+										required</p>
+									<p class="error" *ngIf="addGameFormGroup.errors?.['match_error']">
+										{{addGameFormGroup.errors?.['match_error']}}</p>
+								</div>
+							</div>
+							<div class="col-md-3 mt-4">
+								<label for="bouns">Bonus Amount (%)</label>
+								<input type="text" autocomplete="off" id="bonus" class="form-control" OnlyNumber="true"
+									formControlName="bonusPercentage" [disabled]="!f['ConformationBonusamount'].value"/>
+								<!-- <div class="input-group-append">
+									<span class="input-group-text" onclick="password_show_hide();">
+										<i class="fas fa-eye" id="show_eye"></i>
+										<i class="fas fa-eye-slash d-none" id="hide_eye"></i>
+									</span>
+								</div> -->
+								<div class="text-danger"
+									*ngIf="f['bonusPercentage'].errors && f['bonusPercentage'].dirty || f['bonusPercentage'].touched">
+									<p class="error" *ngIf="f['bonusPercentage'].errors?.['required']">Bonus amount is
+										required</p>
+									<p class="error" *ngIf="f['bonusPercentage'].errors?.['pattern'] || f['bonusPercentage'].errors?.['min']">Please enter
+										value greater than or equal to zero only.</p>
+								</div>
+							</div>
+							<div class="col-md-4 conformation-fields">
+								<label for="totalWinnings">Conformation Bonus amount<span class="text-danger">*</span></label>
+								<mat-radio-group aria-label="Select an option" formControlName="ConformationBonusamount">
+									<mat-radio-button [value]=true>YES</mat-radio-button>
+									<mat-radio-button [value]=false>NO</mat-radio-button>
+								</mat-radio-group>
+								<div class="text-danger"
+									*ngIf="f['conformationLeague'].errors && f['conformationLeague'].dirty || f['conformationLeague'].touched">
+									<p class="error" *ngIf="f['conformationLeague'].errors?.['required']">Conformation
+										League is
+										required</p>
+								</div>
+							</div>
+							<div class="col-md-4 conformation-fields">
+								<label for="totalWinnings">Confirmation League<span class="text-danger">*</span></label>
+								<mat-radio-group aria-label="Select an option" formControlName="conformationLeague">
+									<mat-radio-button [value]=true>YES</mat-radio-button>
+									<mat-radio-button [value]=false>NO</mat-radio-button>
+								</mat-radio-group>
+								<div class="text-danger"
+									*ngIf="f['conformationLeague'].errors && f['conformationLeague'].dirty || f['conformationLeague'].touched">
+									<p class="error" *ngIf="f['conformationLeague'].errors?.['required']">Conformation
+										League is
+										required</p>
+								</div>
+							</div>
+							<div class="col-md-4 conformation-fields">
+								<label for="totalWinnings">Multiple Entry<span class="text-danger">*</span></label>
+								<mat-radio-group aria-label="Select an option" formControlName="multipleEntry">
+									<mat-radio-button [value]=true>YES</mat-radio-button>
+									<mat-radio-button [value]=false>NO</mat-radio-button>
+								</mat-radio-group>
+								<div class="text-danger"
+									*ngIf="f['multipleEntry'].errors && f['multipleEntry'].dirty || f['multipleEntry'].touched">
+									<p class="error" *ngIf="f['multipleEntry'].errors?.['required']">Conformation League
+										is
+										required</p>
+								</div>
+							</div>
+
+						</div>
+
+						<div class="border-bottom mt-4"></div>
+
+						<div class="row mt-4">
+							<div class="col col-lg-4 mt-4">
+								<label for="jaldiPrizeAmount">Jaldi Five Prize Amount<span
+										class="text-danger">*</span></label>
+								<input type="text" min='1' autocomplete="off" id="jaldiPrizeAmount" class="form-control"
+									formControlName="jaldiPrizeAmount" OnlyNumber="true" required />
+								<div class="text-danger"
+									*ngIf="f['jaldiPrizeAmount'].errors && f['jaldiPrizeAmount'].dirty || f['jaldiPrizeAmount'].touched">
+									<p class="error" *ngIf="f['jaldiPrizeAmount'].errors?.['required']">Jaldi five prize
+										amount is required</p>
+									<p class="error" *ngIf="f['jaldiPrizeAmount'].errors?.['pattern'] || f['jaldiPrizeAmount'].errors?.['min']">Please enter
+										value greater than zero only.</p>
+								</div>
+							</div>
+
+							<div class="col col-lg-4 mt-4">
+								<label for="cornerPrizeAmount">4 Corners Prize Amount<span
+										class="text-danger">*</span></label>
+								<input type="text" min='1' autocomplete="off" id="cornerPrizeAmount"
+									class="form-control" formControlName="cornerPrizeAmount" OnlyNumber="true"
+									required />
+								<div class="text-danger"
+									*ngIf="f['cornerPrizeAmount'].errors && f['cornerPrizeAmount'].dirty || f['cornerPrizeAmount'].touched">
+									<p class="error" *ngIf="f['cornerPrizeAmount'].errors?.['required']">4 Corners prize
+										amount is required</p>
+									<p class="error" *ngIf="f['cornerPrizeAmount'].errors?.['pattern'] || f['cornerPrizeAmount'].errors?.['min']">Please enter
+										value greater than zero only.</p>
+								</div>
+							</div>
+
+							<div class="col col-lg-4 mt-4">
+								<label for="firstLinePrizeAmount">1st Line Prize Amount<span
+										class="text-danger">*</span></label>
+								<input type="text" min='1' autocomplete="off" id="firstLinePrizeAmount"
+									class="form-control" formControlName="firstLinePrizeAmount" OnlyNumber="true"
+									required />
+								<div class="text-danger"
+									*ngIf="f['firstLinePrizeAmount'].errors && f['firstLinePrizeAmount'].dirty || f['firstLinePrizeAmount'].touched">
+									<p class="error" *ngIf="f['firstLinePrizeAmount'].errors?.['required']">1st Line
+										prize amount is required</p>
+									<p class="error" *ngIf="f['firstLinePrizeAmount'].errors?.['pattern'] || f['firstLinePrizeAmount'].errors?.['min']">Please enter
+										value greater than zero only.</p>
+								</div>
+							</div>
+
+							<div class="col col-lg-4 mt-4">
+								<label for="secondLinePrizeAmount">2nd Line Prize Amount<span
+										class="text-danger">*</span></label>
+								<input type="text" min='1' autocomplete="off" id="secondLinePrizeAmount"
+									class="form-control" formControlName="secondLinePrizeAmount" OnlyNumber="true"
+									required />
+								<div class="text-danger"
+									*ngIf="f['secondLinePrizeAmount'].errors && f['secondLinePrizeAmount'].dirty || f['secondLinePrizeAmount'].touched">
+									<p class="error" *ngIf="f['secondLinePrizeAmount'].errors?.['required']">2nd Line
+										prize amount is required</p>
+									<p class="error" *ngIf="f['secondLinePrizeAmount'].errors?.['pattern']|| f['secondLinePrizeAmount'].errors?.['min']">Please enter
+										value greater than zero only.</p>
+								</div>
+							</div>
+
+							<div class="col col-lg-4 mt-4">
+								<label for="thirdLinePrizeAmount">3rd Line Prize Amount<span
+										class="text-danger">*</span></label>
+								<input type="text" min='1' autocomplete="off" id="thirdLinePrizeAmount"
+									class="form-control" formControlName="thirdLinePrizeAmount" OnlyNumber="true"
+									required />
+								<div class="text-danger"
+									*ngIf="f['thirdLinePrizeAmount'].errors && f['thirdLinePrizeAmount'].dirty || f['thirdLinePrizeAmount'].touched">
+									<p class="error" *ngIf="f['thirdLinePrizeAmount'].errors?.['required']">3rd Line
+										prize amount is required</p>
+									<p class="error" *ngIf="f['thirdLinePrizeAmount'].errors?.['pattern']|| f['thirdLinePrizeAmount'].errors?.['min']">Please enter
+										value greater than zero only.</p>
+								</div>
+							</div>
+
+							<div class="col col-lg-4 mt-4">
+								<label for="fullHousiePrizeAmount">Full Housie Prize Amount<span
+										class="text-danger">*</span></label>
+								<input type="text" min='1' autocomplete="off" id="fullHousiePrizeAmount"
+									class="form-control" formControlName="fullHousiePrizeAmount" OnlyNumber="true"
+									required />
+								<div class="text-danger"
+									*ngIf="f['fullHousiePrizeAmount'].errors && f['fullHousiePrizeAmount'].dirty || f['fullHousiePrizeAmount'].touched">
+									<p class="error" *ngIf="f['fullHousiePrizeAmount'].errors?.['required']">Full housie
+										prize amount is required</p>
+									<p class="error" *ngIf="f['fullHousiePrizeAmount'].errors?.['pattern'] || f['fullHousiePrizeAmount'].errors?.['min']">Please enter
+										value greater than zero only.</p>
+								</div>
+							</div>
+						</div>
+						<p class="text-danger error sec-err"
+							*ngIf="addGameFormGroup.errors?.['totol_ammountErr'] && toCheckAmmountVal()">
+							{{addGameFormGroup.errors?.['totol_ammountErr']}}</p>
+						<div class="border-bottom mt-4"></div>
+
+						<div class="row mt-4">
+
+							<div class="col col-lg-4 mt-4">
+								<label for="jaldiWinners">Jaldi Five Winners<span class="text-danger">*</span></label>
+								<input type="text" min='1' autocomplete="off" id="jaldiWinners" class="form-control"
+									formControlName="jaldiWinners" OnlyNumber="true" required />
+								<div class="text-danger"
+									*ngIf="f['jaldiWinners'].errors && f['jaldiWinners'].dirty || f['jaldiWinners'].touched">
+									<p class="error" *ngIf="f['jaldiWinners'].errors?.['required']">Jaldi five winners
+										is required</p>
+									<p class="error" *ngIf="f['jaldiWinners'].errors?.['pattern'] || f['jaldiWinners'].errors?.['min']">Please enter value
+										greater than only.</p>
+								</div>
+							</div>
+
+							<div class="col col-lg-4 mt-4">
+								<label for="cornerWinners">4 Corners Winners<span class="text-danger">*</span></label>
+								<input type="text" min='1' autocomplete="off" id="cornerWinners" class="form-control"
+									formControlName="cornerWinners" OnlyNumber="true" required />
+								<div class="text-danger"
+									*ngIf="f['cornerWinners'].errors && f['cornerWinners'].dirty || f['cornerWinners'].touched">
+									<p class="error" *ngIf="f['cornerWinners'].errors?.['required']">4 Corners winners
+										is required</p>
+									<p class="error" *ngIf="f['cornerWinners'].errors?.['pattern'] || f['cornerWinners'].errors?.['min']">Please enter
+										value greater than zero only.</p>
+								</div>
+							</div>
+
+							<div class="col col-lg-4 mt-4">
+								<label for="firstLineWinners">1st Line Winners<span class="text-danger">*</span></label>
+								<input type="text" min='1' autocomplete="off" id="firstLineWinners" class="form-control"
+									formControlName="firstLineWinners" OnlyNumber="true" required />
+								<div class="text-danger"
+									*ngIf="f['firstLineWinners'].errors && f['firstLineWinners'].dirty || f['firstLineWinners'].touched">
+									<p class="error" *ngIf="f['firstLineWinners'].errors?.['required']">1st Line winners
+										is required</p>
+									<p class="error" *ngIf="f['firstLineWinners'].errors?.['pattern'] || f['firstLineWinners'].errors?.['min']">Please enter
+										value greater than zero only.</p>
+								</div>
+							</div>
+
+							<div class="col col-lg-4 mt-4">
+								<label for="secondLineWinners">2nd Line Winners<span
+										class="text-danger">*</span></label>
+								<input type="text" min='1' autocomplete="off" id="secondLineWinners"
+									class="form-control" formControlName="secondLineWinners" OnlyNumber="true"
+									required />
+								<div class="text-danger"
+									*ngIf="f['secondLineWinners'].errors && f['secondLineWinners'].dirty || f['secondLineWinners'].touched">
+									<p class="error" *ngIf="f['secondLineWinners'].errors?.['required']">2nd Line
+										winners is required</p>
+									<p class="error" *ngIf="f['secondLineWinners'].errors?.['pattern'] || f['secondLineWinners'].errors?.['min']">Please enter
+										value greater than zero only.</p>
+								</div>
+							</div>
+
+							<div class="col col-lg-4 mt-4">
+								<label for="thirdLineWinners">3rd Line Winners<span class="text-danger">*</span></label>
+								<input type="text" min='1' autocomplete="off" id="thirdLineWinners" class="form-control"
+									formControlName="thirdLineWinners" OnlyNumber="true" required />
+								<div class="text-danger"
+									*ngIf="f['thirdLineWinners'].errors && f['thirdLineWinners'].dirty || f['thirdLineWinners'].touched">
+									<p class="error" *ngIf="f['thirdLineWinners'].errors?.['required']">3rd Line winners
+										is required</p>
+									<p class="error" *ngIf="f['thirdLineWinners'].errors?.['pattern'] || f['thirdLineWinners'].errors?.['min']">Please enter
+										value greater than zero only.</p>
+								</div>
+							</div>
+
+							<div class="col col-lg-4 mt-4">
+								<label for="fullHousieWinners">Full Housie Winners<span
+										class="text-danger">*</span></label>
+								<input type="text" min='1' autocomplete="off" id="fullHousieWinners"
+									class="form-control" formControlName="fullHousieWinners" OnlyNumber="true"
+									required />
+								<div class="text-danger"
+									*ngIf="f['fullHousieWinners'].errors && f['fullHousieWinners'].dirty || f['fullHousieWinners'].touched">
+									<p class="error" *ngIf="f['fullHousieWinners'].errors?.['required']">Full housie
+										winners is required</p>
+									<p class="error" *ngIf="f['fullHousieWinners'].errors?.['pattern'] || f['fullHousieWinners'].errors?.['min']">Please enter
+										value greater than zero only.</p>
+								</div>
+							</div>
+						</div>
+
+						<p class="text-danger error sec-err"
+							*ngIf="addGameFormGroup.errors?.['totol_tiketCount'] && toCheckCountVal()">
+							{{addGameFormGroup.errors?.['totol_tiketCount']}}</p>
+						<div class="border-bottom mt-4"></div>
+
+						<div class="border-bottom mt-4"></div>
+
+						<div class="row mt-4 time-date-field">
+							<div class="col col-lg-4 mt-4">
+								<label>Game / Tournament Registration Start Date & Time<span
+										class="text-danger">*</span></label>
+							</div>
+							<div class="col col-lg-4">
+								<!-- <input type="text" autocomplete="off" id="registrationStartTime" class="form-control" formControlName="registrationStartTime" required /> -->
+								<!-- 
+								<timepicker autocomplete="off" id="registrationStartTime"
+									formControlName="registrationStartTime" required lang="india"></timepicker> -->
+
+
+								<mat-form-field>
+									<input matInput [ngxMatDatetimePicker]="picker" placeholder="DD/MM/YYYY, HH:MM"
+										formControlName="registrationStartDateTime" [min]="nowDate">
+									<button mat-icon-button matSuffix
+										(click)="picker.open(); $event.stopPropagation();">
+										<mat-icon>today</mat-icon>
+									</button>
+									<ngx-mat-datetime-picker #picker [showSpinners]="showSpinners"
+										[showSeconds]="showSeconds" [stepHour]="stepHour" [stepMinute]="stepMinute"
+										[touchUi]="touchUi" [color]="color"
+										[enableMeridian]="enableMeridian" [defaultTime]="defaultTime">
+									</ngx-mat-datetime-picker>
+								</mat-form-field>
+								<div class="text-danger"
+									*ngIf="f['registrationStartDateTime'].errors && f['registrationStartDateTime'].dirty || f['registrationStartDateTime'].touched">
+									<p class="error" *ngIf="f['registrationStartDateTime'].errors?.['required']">
+										Registration Start Date & Time required</p>
+								</div>
+
+
+							</div>
+
+						</div>
+
+
+
+						<div class="row time-date-field">
+							<div class="col col-lg-4 mt-4">
+								<label>Game/Tournament Registration Close Date & Time<span
+										class="text-danger">*</span></label>
+							</div>
+							<div class="col col-lg-4">
+
+								<mat-form-field>
+									<input matInput [ngxMatDatetimePicker]="picker_1" placeholder="DD/MM/YYYY, HH:MM"
+										formControlName="registrationCloseDateTime"
+										[min]="toCheckMInDate('registerClose')">
+									<button mat-icon-button matSuffix
+										(click)="picker_1.open(); $event.stopPropagation();">
+										<mat-icon>today</mat-icon>
+									</button>
+									<ngx-mat-datetime-picker #picker_1 [showSpinners]="showSpinners"
+										[showSeconds]="showSeconds" [stepHour]="stepHour" [stepMinute]="stepMinute"
+										[stepSecond]="stepSecond" [touchUi]="touchUi" [color]="color"
+										[enableMeridian]="enableMeridian" [defaultTime]="defaultTime">
+									</ngx-mat-datetime-picker>
+								</mat-form-field>
+								<div class="text-danger"
+									*ngIf="f['registrationCloseDateTime'].errors && f['registrationCloseDateTime'].dirty || f['registrationCloseDateTime'].touched">
+									<p class="error" *ngIf="f['registrationCloseDateTime'].errors?.['required']">
+										Registration Close Date & Time required</p>
+								</div>
+
+
+
+								<!-- <input type="text" autocomplete="off" id="registrationCloseDate" class="form-control"
+									formControlName="registrationCloseDate" required /> -->
+								<!-- <timepicker autocomplete="off" id="registrationCloseDate"
+									formControlName="registrationCloseDate" required></timepicker>
+								<div class="text-danger"
+									*ngIf="f['registrationCloseDate'].errors && f['registrationCloseDate'].dirty || f['registrationCloseDate'].touched">
+									<p class="error" *ngIf="f['registrationCloseDate'].errors?.['required']">
+										Game/Tournament close time is required</p>
+								</div> -->
+							</div>
+
+						</div>
+
+						<div class="row time-date-field">
+							<div class="col col-lg-4 mt-4">
+								<label>Game/Tournament Start Date & Time<span class="text-danger">*</span></label>
+							</div>
+							<div class="col col-lg-4">
+								<!-- <input type="text" autocomplete="off" id="registrationStartCloseDate"
+									class="form-control" formControlName="registrationStartCloseDate" required /> -->
+
+								<mat-form-field>
+									<input matInput [ngxMatDatetimePicker]="picker_2" placeholder="MM/DD/YYYY, HH:MM"
+										formControlName="gameStartDateTime" [min]="toCheckMInDate('gameStart')" />
+									<button mat-icon-button matSuffix
+										(click)="picker_2.open(); $event.stopPropagation();">
+										<mat-icon>today</mat-icon>
+									</button>
+
+
+									<ngx-mat-datetime-picker #picker_2 [showSpinners]="showSpinners"
+										[showSeconds]="showSeconds" [stepHour]="stepHour" [stepMinute]="stepMinute"
+										[stepSecond]="stepSecond" [touchUi]="touchUi" [color]="color"
+										[enableMeridian]="enableMeridian" [defaultTime]="defaultTime">
+									</ngx-mat-datetime-picker>
+								</mat-form-field>
+
+								<div class="text-danger"
+									*ngIf="f['gameStartDateTime'].errors && f['gameStartDateTime'].dirty || f['gameStartDateTime'].touched">
+									<p class="error" *ngIf="f['gameStartDateTime'].errors?.['required']">
+										Game Start Date & Time required</p>
+								</div>
+							</div>
+
+						</div>
+						<div class="border-bottom mt-4"></div>
+
+						<div formArrayName="jaldiFive" class="mt-4">
+							<label>Jaldi Five</label>
+							<span class="mx-4">
+								<a type="button" class="btn-floating deep-purple" (click)="addjaldiFive(null)">
+									<i class="fas fa-plus-circle" aria-hidden="true"></i>
+								</a>
+							</span>
+
+							<div class="row" *ngFor="let row of jaldiFive.controls; let i = index"
+								formGroupName="{{i}}">
+								<div class="col col-lg-4 mt-4">
+									<label for="from">From<span class="text-danger">*</span></label>
+									<input type="text" min='1' autocomplete="off" id="firstCol" class="form-control"
+										formControlName="firstCol" required />
+									<div class="text-danger"
+										*ngIf="toChecktouchedOrNot(addDynValidation('jaldiFive',i,'firstCol'))">
+										<p class="error" *ngIf="toCheckReq(addDynValidation('jaldiFive',i,'firstCol'))">
+											This
+											field is required</p>
+										<p class="error"
+											*ngIf="toCheckPattern(addDynValidation('jaldiFive',i,'firstCol')) || toCheckMin(addDynValidation('jaldiFive',i,'firstCol'))">
+											Please enter value greater than zero only.</p>
+									</div>
+								</div>
+								<!-- <div class="col col-lg-1 text-center mt-4">
+									<label>To</label>
+								</div> -->
+								<div class="col col-lg-4 mt-4">
+									<label for="to">To<span class="text-danger">*</span></label>
+									<input type="text" min='1' autocomplete="off" id="secondCol" class="form-control"
+										formControlName="secondCol" required />
+									<div class="text-danger"
+										*ngIf="toChecktouchedOrNot(addDynValidation('jaldiFive',i,'secondCol'))">
+										<p class="error"
+											*ngIf="toCheckReq(addDynValidation('jaldiFive',i,'secondCol'))">
+											This
+											field is required</p>
+										<p class="error"
+											*ngIf="toCheckPattern(addDynValidation('jaldiFive',i,'secondCol')) || toCheckMin(addDynValidation('jaldiFive',i,'secondCol'))">
+											Please enter value greater than zero only.</p>
+									</div>
+								</div>
+
+								<div class="col col-lg-3 mt-4">
+									<label for="amount">Amount<span class="text-danger">*</span></label>
+									<input type="text" autocomplete="off" id="thirdCol" class="form-control"
+										formControlName="thirdCol" required />
+									<div class="text-danger"
+										*ngIf="toChecktouchedOrNot(addDynValidation('jaldiFive',i,'thirdCol'))">
+										<p class="error" *ngIf="toCheckReq(addDynValidation('jaldiFive',i,'thirdCol'))">
+											This
+											field is required</p>
+										<p class="error"
+											*ngIf="toCheckPattern(addDynValidation('jaldiFive',i,'thirdCol')) || toCheckMin(addDynValidation('jaldiFive',i,'thirdCol'))">
+											Please enter value greater than zero only.</p>
+									</div>
+								</div>
+
+								<div class="col col-lg-1 mt-4" *ngIf="jaldiFive.controls.length != 1">
+									<a type="button" class="btn-floating deep-purple" (click)="deletejaldiFive(i)">
+										<i class="fas fa-minus-circle" aria-hidden="true"></i>
+									</a>
+								</div>
+							</div>
+							<p class="text-danger error sec-err" *ngIf="dynamicFieldsErr?.['jaldiFive']">
+								{{dynamicFieldsErr?.['jaldiFive']}}</p>
+						</div>
+
+						<div class="border-bottom mt-4"></div>
+
+						<div formArrayName="fourCorners" class="mt-4">
+							<label>4 Corners</label>
+							<span class="mx-4">
+								<a type="button" class="btn-floating deep-purple" (click)="addfourCorners(null)">
+									<i class="fas fa-plus-circle" aria-hidden="true"></i>
+								</a>
+							</span>
+
+							<div class="row" *ngFor="let row of fourCorners.controls; let i = index"
+								formGroupName="{{i}}">
+								<div class="col col-lg-4 mt-4">
+									<label for="from">From<span class="text-danger">*</span></label>
+									<input type="text" min='1' autocomplete="off" id="firstCol" class="form-control"
+										formControlName="firstCol" required />
+									<div class="text-danger"
+										*ngIf="toChecktouchedOrNot(addDynValidation('fourCorners',i,'firstCol'))">
+										<p class="error"
+											*ngIf="toCheckReq(addDynValidation('fourCorners',i,'firstCol'))">
+											This
+											field is required</p>
+										<p class="error"
+											*ngIf="toCheckPattern(addDynValidation('fourCorners',i,'firstCol')) || toCheckMin(addDynValidation('fourCorners',i,'firstCol'))">
+											Please enter value greater than zero only.</p>
+									</div>
+								</div>
+								<!-- <div class="col col-lg-1 text-center mt-4">
+									<label>To</label>
+								</div> -->
+								<div class="col col-lg-4 mt-4">
+									<label for="to">To<span class="text-danger">*</span></label>
+									<input type="text" min='1' autocomplete="off" id="secondCol" class="form-control"
+										formControlName="secondCol" required />
+									<div class="text-danger"
+										*ngIf="toChecktouchedOrNot(addDynValidation('fourCorners',i,'secondCol'))">
+										<p class="error"
+											*ngIf="toCheckReq(addDynValidation('fourCorners',i,'secondCol'))">
+											This
+											field is required</p>
+										<p class="error"
+											*ngIf="toCheckPattern(addDynValidation('fourCorners',i,'secondCol')) || toCheckMin(addDynValidation('fourCorners',i,'secondCol'))">
+											Please enter value greater than zero only.</p>
+									</div>
+								</div>
+
+								<div class="col col-lg-3 mt-4">
+									<label for="amount">Amount<span class="text-danger">*</span></label>
+									<input type="text" autocomplete="off" id="thirdCol" class="form-control"
+										formControlName="thirdCol" required />
+									<div class="text-danger"
+										*ngIf="toChecktouchedOrNot(addDynValidation('fourCorners',i,'thirdCol'))">
+										<p class="error"
+											*ngIf="toCheckReq(addDynValidation('fourCorners',i,'thirdCol'))">
+											This
+											field is required</p>
+										<p class="error"
+											*ngIf="toCheckPattern(addDynValidation('fourCorners',i,'thirdCol')) || toCheckMin(addDynValidation('fourCorners',i,'thirdCol'))">
+											Please enter value greater than zero only.</p>
+									</div>
+								</div>
+
+								<div class="col col-lg-1 mt-4" *ngIf="fourCorners.controls.length != 1">
+									<a type="button" class="btn-floating deep-purple" (click)="deletefourCorners(i)">
+										<i class="fas fa-minus-circle" aria-hidden="true"></i>
+									</a>
+								</div>
+							</div>
+							<p class="text-danger error sec-err" *ngIf="dynamicFieldsErr?.['fourCorners']">
+								{{dynamicFieldsErr?.['fourCorners']}}</p>
+						</div>
+						<div class="border-bottom mt-4"></div>
+
+						<div formArrayName="firstLine" class="mt-4">
+							<label>1st Line</label>
+							<span class="mx-4">
+								<a type="button" class="btn-floating deep-purple" (click)="addfirstLine(null)">
+									<i class="fas fa-plus-circle" aria-hidden="true"></i>
+								</a>
+							</span>
+
+							<div class="row" *ngFor="let row of firstLine.controls; let i = index"
+								formGroupName="{{i}}">
+								<div class="col col-lg-4 mt-4">
+									<label for="from">From<span class="text-danger">*</span></label>
+									<input type="text" min='1' autocomplete="off" id="firstCol" class="form-control"
+										formControlName="firstCol" required />
+									<div class="text-danger"
+										*ngIf="toChecktouchedOrNot(addDynValidation('firstLine',i,'firstCol'))">
+										<p class="error" *ngIf="toCheckReq(addDynValidation('firstLine',i,'firstCol'))">
+											This
+											field is required</p>
+										<p class="error"
+											*ngIf="toCheckPattern(addDynValidation('firstLine',i,'firstCol')) || toCheckMin(addDynValidation('firstLine',i,'firstCol'))">
+											Please enter value greater than zero only.</p>
+									</div>
+
+								</div>
+								<!-- <div class="col col-lg-1 text-center mt-4">
+									<label>To</label>
+								</div> -->
+								<div class="col col-lg-4 mt-4">
+									<label for="to">To<span class="text-danger">*</span></label>
+									<input type="text" min='1' autocomplete="off" id="secondCol" class="form-control"
+										formControlName="secondCol" required />
+									<div class="text-danger"
+										*ngIf="toChecktouchedOrNot(addDynValidation('firstLine',i,'secondCol'))">
+										<p class="error"
+											*ngIf="toCheckReq(addDynValidation('firstLine',i,'secondCol'))">This
+											field is required</p>
+										<p class="error"
+											*ngIf="toCheckPattern(addDynValidation('firstLine',i,'secondCol')) || toCheckMin(addDynValidation('firstLine',i,'secondCol'))">
+											Please enter value greater than zero only.</p>
+									</div>
+								</div>
+
+								<div class="col col-lg-3 mt-4">
+									<label for="amount">Amount<span class="text-danger">*</span></label>
+									<input type="text" autocomplete="off" id="thirdCol" class="form-control"
+										formControlName="thirdCol" required />
+									<div class="text-danger"
+										*ngIf="toChecktouchedOrNot(addDynValidation('firstLine',i,'thirdCol'))">
+										<p class="error" *ngIf="toCheckReq(addDynValidation('firstLine',i,'thirdCol'))">
+											This
+											field is required</p>
+										<p class="error"
+											*ngIf="toCheckPattern(addDynValidation('firstLine',i,'thirdCol')) || toCheckMin(addDynValidation('firstLine',i,'thirdCol'))">
+											Please enter value greater than zero only.</p>
+									</div>
+								</div>
+
+								<div class="col col-lg-1 mt-4" *ngIf="firstLine.controls.length != 1">
+									<a type="button" class="btn-floating deep-purple" (click)="deletefirstLine(i)">
+										<i class="fas fa-minus-circle" aria-hidden="true"></i>
+									</a>
+								</div>
+							</div>
+							<p class="text-danger error sec-err" *ngIf="dynamicFieldsErr?.['firstLine']">
+								{{dynamicFieldsErr?.['firstLine']}}</p>
+						</div>
+						<div class="border-bottom mt-4"></div>
+
+						<div formArrayName="secondLine" class="mt-4">
+							<label>2nd Line</label>
+							<span class="mx-4">
+								<a type="button" class="btn-floating deep-purple" (click)="addsecondLine(null)">
+									<i class="fas fa-plus-circle" aria-hidden="true"></i>
+								</a>
+							</span>
+
+							<div class="row" *ngFor="let row of secondLine.controls; let i = index"
+								formGroupName="{{i}}">
+								<div class="col col-lg-4 mt-4">
+									<label for="from">From<span class="text-danger">*</span></label>
+									<input type="text" min='1' autocomplete="off" id="firstCol" class="form-control"
+										formControlName="firstCol" required />
+									<div class="text-danger"
+										*ngIf="toChecktouchedOrNot(addDynValidation('secondLine',i,'firstCol'))">
+										<p class="error"
+											*ngIf="toCheckReq(addDynValidation('secondLine',i,'firstCol'))">
+											This
+											field is required</p>
+										<p class="error"
+											*ngIf="toCheckPattern(addDynValidation('secondLine',i,'firstCol')) || toCheckMin(addDynValidation('secondLine',i,'firstCol'))">
+											Please enter value greater than zero only.</p>
+									</div>
+								</div>
+								<!-- <div class="col col-lg-1 text-center mt-4">
+									<label>To</label>
+								</div> -->
+								<div class="col col-lg-4 mt-4">
+									<label for="to">To<span class="text-danger">*</span></label>
+									<input type="text" min='1' autocomplete="off" id="secondCol" class="form-control"
+										formControlName="secondCol" required />
+									<div class="text-danger"
+										*ngIf="toChecktouchedOrNot(addDynValidation('secondLine',i,'secondCol'))">
+										<p class="error"
+											*ngIf="toCheckReq(addDynValidation('secondLine',i,'secondCol'))">
+											This
+											field is required</p>
+										<p class="error"
+											*ngIf="toCheckPattern(addDynValidation('secondLine',i,'secondCol')) || toCheckMin(addDynValidation('secondLine',i,'secondCol'))">
+											Please enter value greater than zero only.</p>
+									</div>
+								</div>
+
+								<div class="col col-lg-3 mt-4">
+									<label for="amount">Amount<span class="text-danger">*</span></label>
+									<input type="text" autocomplete="off" id="thirdCol" class="form-control"
+										formControlName="thirdCol" required />
+									<div class="text-danger"
+										*ngIf="toChecktouchedOrNot(addDynValidation('secondLine',i,'thirdCol'))">
+										<p class="error"
+											*ngIf="toCheckReq(addDynValidation('secondLine',i,'thirdCol'))">
+											This
+											field is required</p>
+										<p class="error"
+											*ngIf="toCheckPattern(addDynValidation('secondLine',i,'thirdCol')) || toCheckMin(addDynValidation('secondLine',i,'thirdCol'))">
+											Please enter value greater than zero only.</p>
+									</div>
+								</div>
+
+								<div class="col col-lg-1 mt-4" *ngIf="secondLine.controls.length != 1">
+									<a type="button" class="btn-floating deep-purple" (click)="deletesecondLine(i)">
+										<i class="fas fa-minus-circle" aria-hidden="true"></i>
+									</a>
+								</div>
+							</div>
+							<p class="text-danger error sec-err" *ngIf="dynamicFieldsErr?.['secondLine']">
+								{{dynamicFieldsErr?.['secondLine']}}</p>
+						</div>
+						<div class="border-bottom mt-4"></div>
+
+						<div formArrayName="thirdLine" class="mt-4">
+							<label>3rd Line</label>
+							<span class="mx-4">
+								<a type="button" class="btn-floating deep-purple" (click)="addthirdLine(null)">
+									<i class="fas fa-plus-circle" aria-hidden="true"></i>
+								</a>
+							</span>
+
+							<div class="row" *ngFor="let row of thirdLine.controls; let i = index"
+								formGroupName="{{i}}">
+								<div class="col col-lg-4 mt-4">
+									<label for="from">From<span class="text-danger">*</span></label>
+									<input type="text" min='1' autocomplete="off" id="firstCol" class="form-control"
+										formControlName="firstCol" required />
+									<div class="text-danger"
+										*ngIf="toChecktouchedOrNot(addDynValidation('thirdLine',i,'firstCol'))">
+										<p class="error" *ngIf="toCheckReq(addDynValidation('thirdLine',i,'firstCol'))">
+											This
+											field is required</p>
+										<p class="error"
+											*ngIf="toCheckPattern(addDynValidation('thirdLine',i,'firstCol')) || toCheckMin(addDynValidation('thirdLine',i,'firstCol'))">
+											Please enter value greater than zero only.</p>
+									</div>
+								</div>
+								<!-- <div class="col col-lg-1 text-center mt-4">
+									<label>To</label>
+								</div> -->
+								<div class="col col-lg-4 mt-4">
+									<label for="to">To<span class="text-danger">*</span></label>
+									<input type="text" min='1' autocomplete="off" id="secondCol" class="form-control"
+										formControlName="secondCol" required />
+									<div class="text-danger"
+										*ngIf="toChecktouchedOrNot(addDynValidation('thirdLine',i,'secondCol'))">
+										<p class="error"
+											*ngIf="toCheckReq(addDynValidation('thirdLine',i,'secondCol'))">This
+											field is required</p>
+										<p class="error"
+											*ngIf="toCheckPattern(addDynValidation('thirdLine',i,'secondCol')) || toCheckMin(addDynValidation('thirdLine',i,'secondCol'))">
+											Please enter value greater than zero only.</p>
+									</div>
+								</div>
+
+								<div class="col col-lg-3 mt-4">
+									<label for="amount">Amount<span class="text-danger">*</span></label>
+									<input type="text" autocomplete="off" id="thirdCol" class="form-control"
+										formControlName="thirdCol" required />
+									<div class="text-danger"
+										*ngIf="toChecktouchedOrNot(addDynValidation('thirdLine',i,'thirdCol'))">
+										<p class="error" *ngIf="toCheckReq(addDynValidation('thirdLine',i,'thirdCol'))">
+											This
+											field is required</p>
+										<p class="error"
+											*ngIf="toCheckPattern(addDynValidation('thirdLine',i,'thirdCol')) || toCheckMin(addDynValidation('thirdLine',i,'thirdCol'))">
+											Please enter value greater than zero only.</p>
+									</div>
+								</div>
+
+								<div class="col col-lg-1 mt-4" *ngIf="thirdLine.controls.length != 1">
+									<a type="button" class="btn-floating deep-purple" (click)="deletethirdLine(i)">
+										<i class="fas fa-minus-circle" aria-hidden="true"></i>
+									</a>
+								</div>
+							</div>
+							<p class="text-danger error sec-err" *ngIf="dynamicFieldsErr?.['thirdLine']">
+								{{dynamicFieldsErr?.['thirdLine']}}</p>
+						</div>
+						<div class="border-bottom mt-4"></div>
+
+						<div formArrayName="fullHousie" class="mt-4">
+							<label>Full Housie</label>
+							<span class="mx-4">
+								<a type="button" class="btn-floating deep-purple" (click)="addfullHousie(null)">
+									<i class="fas fa-plus-circle" aria-hidden="true"></i>
+								</a>
+							</span>
+
+							<div class="row" *ngFor="let row of fullHousie.controls; let i = index"
+								formGroupName="{{i}}">
+								<div class="col col-lg-4 mt-4">
+									<label for="from">From<span class="text-danger">*</span></label>
+									<input type="text" min='1' autocomplete="off" id="firstCol" class="form-control"
+										formControlName="firstCol" required />
+									<div class="text-danger"
+										*ngIf="toChecktouchedOrNot(addDynValidation('fullHousie',i,'firstCol'))">
+										<p class="error"
+											*ngIf="toCheckReq(addDynValidation('fullHousie',i,'firstCol'))">This
+											field is required</p>
+										<p class="error"
+											*ngIf="toCheckPattern(addDynValidation('fullHousie',i,'firstCol')) || toCheckMin(addDynValidation('fullHousie',i,'firstCol'))">Please
+											enter value greater than zero only.</p>
+									</div>
+								</div>
+								<!-- <div class="col col-lg-1 text-center mt-4">
+									<label>To</label>
+								</div> -->
+								<div class="col col-lg-4 mt-4">
+									<label for="to">To<span class="text-danger">*</span></label>
+									<input type="text" min='1' autocomplete="off" id="secondCol" class="form-control"
+										formControlName="secondCol" required />
+									<div class="text-danger"
+										*ngIf="toChecktouchedOrNot(addDynValidation('fullHousie',i,'secondCol'))">
+										<p class="error"
+											*ngIf="toCheckReq(addDynValidation('fullHousie',i,'secondCol'))">This
+											field is required</p>
+										<p class="error"
+											*ngIf="toCheckPattern(addDynValidation('fullHousie',i,'secondCol')) || toCheckMin(addDynValidation('fullHousie',i,'secondCol'))">Please
+											enter value greater than zero only.</p>
+									</div>
+								</div>
+
+								<div class="col col-lg-3 mt-4">
+									<label for="amount">Amount<span class="text-danger">*</span></label>
+									<input type="text" autocomplete="off" id="thirdCol" class="form-control"
+										formControlName="thirdCol" required />
+									<div class="text-danger"
+										*ngIf="toChecktouchedOrNot(addDynValidation('fullHousie',i,'thirdCol'))">
+										<p class="error"
+											*ngIf="toCheckReq(addDynValidation('fullHousie',i,'thirdCol'))">This
+											field is required</p>
+										<p class="error"
+											*ngIf="toCheckPattern(addDynValidation('fullHousie',i,'thirdCol')) || toCheckMin(addDynValidation('fullHousie',i,'thirdCol'))">Please
+											enter value greater than zero only.</p>
+									</div>
+								</div>
+
+								<div class="col col-lg-1 mt-4" *ngIf="fullHousie.controls.length != 1">
+									<a type="button" class="btn-floating deep-purple" (click)="deletefullHousie(i)">
+										<i class="fas fa-minus-circle" aria-hidden="true"></i>
+									</a>
+								</div>
+							</div>
+							<p class="text-danger error sec-err" *ngIf="dynamicFieldsErr?.['fullHousie']">
+								{{dynamicFieldsErr?.['fullHousie']}}</p>
+						</div>
+						<div class="border-bottom mt-4"></div>
+					</div>
+					<div class="btn-wrap text-right">
+						<button type="button" (click)="addGame()" class="btn btn-primary">{{ id ? 'Update'
+							:'Add'}}</button>
+					</div>
+				</form>
+
+			</div>
+		</div>
+	</div>
+</section>
+<!-- <app-loader [type]=2 *ngIf="dataLoader"></app-loader> -->

@@ -1,0 +1,134 @@
+<div class="modal fade" id="addAdminModal" tabindex="-1" role="dialog" aria-labelledby="addAdminModalLabel"
+	aria-hidden="true" data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog">
+		<div class="modal-content" *ngIf="!modalData.id">
+			<div class="modal-header">
+				<h4 *ngIf="!modalData._id" class="modal-title" id="addAdminModalLabel">Add New Sub Admin</h4>
+				<h4 *ngIf="modalData._id" class="modal-title" id="addAdminModalLabel">Update Sub Admin Details</h4>
+				<button type="button" id="close" (click)="isModalOpen = false" class="close" data-dismiss="modal"><span
+						aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+			</div>
+			<div class="modal-body">
+				<form [formGroup]="adminDeatilsFormGroup" (keydown.enter)="$event.preventDefault();">
+					<div class="form-group">
+
+						<div class="row">
+							<div class="col">
+								<label for="name">Name:<span class="text-danger">*</span></label>
+								<input type="text" autocomplete="off" id="name" class="form-control"
+									formControlName="name" required />
+								<div *ngIf="formFieldValidator('name')" class="text-danger">
+									<span *ngIf="formFieldErrors('name')?.hasOwnProperty('required')">
+										Name is required
+									</span>
+
+								</div>
+							</div>
+						</div>
+						<div class="row mt-3">
+							<div class="col">
+								<label for="mobile">Mobile:<span class="text-danger">*</span></label>
+								<input type="text" autocomplete="off" maxlength="10" id="mobile" class="form-control"
+									formControlName="mobile" required />
+								<div *ngIf="formFieldValidator('mobile')" class="text-danger">
+									<span *ngIf="formFieldErrors('mobile')?.hasOwnProperty('required')">
+										Mobile is required
+									</span>
+									<span
+										*ngIf="formFieldErrors('mobile')?.hasOwnProperty('minlength') || formFieldErrors('mobile')?.hasOwnProperty('maxlength') || formFieldErrors('mobile')?.hasOwnProperty('pattern')">
+										Please enter valid mobile number and it should be 10 digits
+									</span>
+								</div>
+							</div>
+						</div>
+						<div class="row mt-3">
+							<div class="col">
+								<label for="email">Email:<span class="text-danger">*</span></label>
+								<input type="email" autocomplete="off" id="email" class="form-control"
+									formControlName="email" required />
+								<div *ngIf="formFieldValidator('email')" class="text-danger">
+									<span *ngIf="formFieldErrors('email')?.hasOwnProperty('required')">
+										Email is required
+									</span>
+									<span *ngIf="formFieldErrors('email')?.hasOwnProperty('pattern')">
+										Invalid pattern
+									</span>
+								</div>
+							</div>
+						</div>
+						<div class="row mt-3" *ngIf="!modalData._id">
+							<div class="col">
+								<label for="password">Password:<span class="text-danger">*</span></label>
+								<input [type]="hide ? 'password' : 'text'" autocomplete="off" id="password" class="form-control"
+									formControlName="password" required />
+									<button mat-icon-button matSuffix (click)="hide = !hide"
+									[attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide"
+									class="show-hide-fun">
+									<mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+								</button>
+								<div *ngIf="formFieldValidator('password')" class="text-danger">
+									<span *ngIf="formFieldErrors('password')?.hasOwnProperty('required')">
+										password is required
+									</span>
+									<span *ngIf="formFieldErrors('password')?.hasOwnProperty('minlength')">
+										Password must be atleast 4 characters
+									</span>
+									<span *ngIf="formFieldErrors('password')?.hasOwnProperty('maxlength')">
+										Should be less then 14 characters
+									</span>
+								</div>
+							</div>
+						</div>
+
+
+
+
+						<!-- <div class="rule mt-3">
+                            <label>Module Access:<span class="text-danger">*</span></label><br />
+						    <label>
+								<input type="checkbox" [value]="obj.value" (change)="onCheckboxChange($event)" />
+								{{obj.name}}
+							  </label>
+							</div> -->
+					</div>
+				</form>
+
+				<div class="rule mt-3">
+					<label>Module Access:<span class="text-danger">*</span></label><br />
+					<div *ngFor="let obj of obj; let i=index">
+						<label>
+							<input type="checkbox" [(ngModel)]="obj.checked" [value]="obj.value"
+								(change)="onCheckboxChange($event)" />
+							{{obj.name}}
+						</label>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" (click)="isModalOpen = false" class="btn btn-dark"
+					data-dismiss="modal">Close</button>
+				<button type="button" (click)="addAdmin()" class="btn btn-primary"
+					[disabled]="adminDeatilsFormGroup.invalid || dataLoader || checkValidOrNot()">
+					<span *ngIf="modalData._id">Update</span>
+					<span *ngIf="!modalData._id">Add</span>
+				</button>
+			</div>
+		</div>
+
+		<div class="modal-content" *ngIf="modalData.id">
+			<div class="modal-header">
+				<h4 class="modal-title" id="addAdminModalLabel">Delete Admin</h4>
+				<button type="button" id="close" (click)="isModalOpen = false" class="close" data-dismiss="modal"><span
+						aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+			</div>
+			<div class="modal-body">
+				<p>Are you sure you want to delete?</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" (click)="isModalOpen = false" class="btn btn-dark"
+					data-dismiss="modal">Cancel</button>
+				<button type="button" (click)="confirm()" class="btn btn-primary">Confirm</button>
+			</div>
+		</div>
+	</div>
+</div>
